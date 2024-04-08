@@ -671,7 +671,7 @@ export const rpcSlice = createSlice({
 
     /**
      * Push feature to feature search results
-     * @method setGFILocations
+     * @method setFeatureSearchResults
      * @param {Object} state
      * @param {Object} action
      */
@@ -681,7 +681,7 @@ export const rpcSlice = createSlice({
 
     /**
      * Reset feature search results
-     * @method setGFILocations
+     * @method resetFeatureSearchResults
      * @param {Object} state
      * @param {Object} action
      */
@@ -691,7 +691,7 @@ export const rpcSlice = createSlice({
 
     /**
      * Is search ongoing
-     * @method setGFILocations
+     * @method setSearchOn
      * @param {Object} state
      * @param {Object} action
      */
