@@ -65,8 +65,6 @@ const MetadataSearch = ({
 
     const handleIconClick = () => {
         store.dispatch(setIsMoreSearchOpen(!isMoreSearchOpen));
-        store.dispatch(setActiveSwitch(null));
-
         toggleSearchModal();
     };
 

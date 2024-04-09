@@ -48,10 +48,11 @@ const StyledInput = styled.input`
     }
 `;
 
-const AddressSearch = ({
+
+const FeatureSearch = ({
     searchValue,
     setSearchValue,
-    handleAddressSearch,
+    handleFeatureSearch,
     toggleSearchModal
 }) => {
     const {isSearchOpen, isMoreSearchOpen} = useAppSelector((state) => state.ui);
@@ -75,11 +76,11 @@ const AddressSearch = ({
             <StyledInput
                 type="text"
                 value={searchValue}
-                placeholder={strings.search.address.title}
+                placeholder={strings.search.feature.title}
                 onChange={e => setSearchValue(e.target.value)}
                 onKeyPress={e => {
                     if (e.key === 'Enter') {
-                        handleAddressSearch(e.target.value);
+                        handleFeatureSearch(e.target.value);
                     }
                 }}
             />
@@ -87,4 +88,4 @@ const AddressSearch = ({
     );
   };
 
-export default AddressSearch;
+export default FeatureSearch;
