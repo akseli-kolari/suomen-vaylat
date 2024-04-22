@@ -278,9 +278,9 @@ const FeatureSearchResultPanel = ({
                     </StyledCloseButton>
                     </StyledWarningContainer>
                 }
-                {featureSearchResults.length > 0 && featureSearchResults.map(layer => {
+                {featureSearchResults.length > 0 && featureSearchResults.map((layer, index) => {
                     return(
-                    <>
+                    <div key={layer + index}>
                         <StyledLayerTitle>
                             <StyledGroupName>{layer.layerName}</StyledGroupName>
                             <DropdownIcon 
@@ -292,7 +292,7 @@ const FeatureSearchResultPanel = ({
                                 <FeatureList layer={layer} isMobile={isMobile} setShowSearchResults={setShowSearchResults} searchClickedRow={searchClickedRow} setSelectedFeature={setSelectedFeature} selectedFeature={selectedFeature}></FeatureList>
                             }
 
-                    </>)
+                    </div>)
                 })
                 }
             </StyledDropDown>
@@ -312,7 +312,7 @@ const FeatureList = ({layer, isMobile, setShowSearchResults, searchClickedRow, s
         {layer.content[0].geojson.features.map ((feature, index) => {
             return (
                 <StyledDropdownContentItem
-                    key={"feature_" +index}
+                    key={"feature_" + feature + "_" + index}
                     onClick={() => {
                         isMobile &&
                             setShowSearchResults(false);
@@ -322,15 +322,15 @@ const FeatureList = ({layer, isMobile, setShowSearchResults, searchClickedRow, s
                     selected={selectedFeature === feature.id ? true : false}
                 >
                     <StyledDropdownFeatureResultsContainer>
-                        <StyledFeatureName key={"feature_id_" + feature.id}>{feature.id}</StyledFeatureName>
+                        <StyledFeatureName>{feature.id}</StyledFeatureName>
                         <StyledDropdownFeatureResults>
 
-                            {feature.match.map(match =>
+                            {feature.match.map((match, index) =>
                             {
                                 const key = Object.keys(match)[0];
                                 const value = Object.values(match)[0].toString().slice(0, 25) + (Object.values(match)[0].toString().length > 25 ? "..." : "");
                                 return(
-                                        <StyledDropdownContentItemTitle active={searchClickedRow === index}>
+                                        <StyledDropdownContentItemTitle key={match + "_" + index} active={searchClickedRow === index}>
 
                                         <b style={{marginRight: '0.5em'}}>{key + ":"}</b><p >{value}</p>
                                         </StyledDropdownContentItemTitle>
