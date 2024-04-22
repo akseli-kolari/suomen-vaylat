@@ -234,6 +234,8 @@ const FeatureSearchResultPanel = ({
             openLayer !== featureSearchResults[0].layerId && setOpenLayer(featureSearchResults[0].layerId );
             featureSearchResults.filter(layer => layer.limitExceeded).length > 0 && !showWarn && setShowWarn(true);
             showFeatureOnMap(channel, featureSearchResults[0], null);
+        } else {
+            setShowWarn(false);
         }
     }, [featureSearchResults]);
 

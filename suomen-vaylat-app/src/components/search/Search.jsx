@@ -340,6 +340,14 @@ const Search = () => {
                 [null, null, vectorLayerId]
             );
         });
+
+        // for feature search
+        channel &&
+        channel.postRequest("MapModulePlugin.RemoveFeaturesFromMapRequest", [
+        null,
+        null,
+        "feature-search-results",
+        ]);
     };
 
     const searchTypes = {
