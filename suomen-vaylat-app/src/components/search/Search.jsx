@@ -27,7 +27,7 @@ import { setIsSearchOpen, setGeoJsonArray, setHasToastBeenShown, setActiveSwitch
 import CircleButton from '../circle-button/CircleButton';
 
 import { VKMGeoJsonHoverStyles, VKMGeoJsonStyles } from './VKMSearchStyles';
-import { toast } from 'react-toastify';
+import { Slide, toast } from "react-toastify";
 import SearchToast from '../toasts/SearchToast';
 import ReactTooltip from 'react-tooltip';
 import TipToast from '../toasts/TipToast';
@@ -278,38 +278,43 @@ const Search = () => {
     const handleFeatureSearch = (searchValue) => {
         setIsSearching(true);
         store.dispatch(setSearchOn(true));
-
         store.dispatch(resetFeatureSearchResults());
 
         selectedLayersByType.mapLayers.forEach(layer => {
-            new Promise(function(resolve, reject) {
                 // executor (the producing code, "singer")
                 channel.searchFeatures(
                     [[layer.id], searchValue],
                     (data) => {
-                        if (Object.keys(data).length > 0) {
+                        if (Object.keys(data).length > 0 && data.gfi.length > 0) {
                             setIsSearching(false);
                             store.dispatch(setSearchOn(false));
                             store.dispatch(setFeatureSearchResults(data.gfi[0]));
                             setLastSearchValue(searchValue);
-                            resolve("ok");                  
                         } else {
                             setIsSearching(false);
                             store.dispatch(setSearchOn(false));
 
                             setLastSearchValue(searchValue);
-                            resolve("ok");                  
                         }
                     },
                     function (error) {
                         setIsSearching(false);
                         store.dispatch(setSearchOn(false));
-
                         setLastSearchValue(searchValue);
-                        reject("Error fetching features:", error);
+
+                        toast.error(strings.search.feature.errorLayerStart + layer.name + strings.search.feature.errorLayerEnd, {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "colored",
+                            transition: Slide
+                            });
                     }
                 )
-            });
         })
         
     };
