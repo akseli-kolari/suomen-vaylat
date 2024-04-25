@@ -240,6 +240,7 @@ const SearchModal = ({
     toggleModal,
     carriageWaySearch, 
     setCarriageWaySearch,
+    removeMarkersAndFeatures
 }) => {
     const { store } = useContext(ReactReduxContext);
     const { activeSwitch } = useAppSelector((state) => state.ui);
@@ -262,7 +263,8 @@ const SearchModal = ({
         setShowSearchResults(false);
         setSearchValue('');
         store.dispatch(resetFeatureSearchResults());
-      };
+        removeMarkersAndFeatures();
+    };
  
     useEffect(() => {
        setSearchValue(searchValue)

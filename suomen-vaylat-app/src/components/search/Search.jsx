@@ -730,6 +730,7 @@ const Search = () => {
                         toggleModal={toggleSearchModal} 
                         carriageWaySearch={carriageWaySearch}
                         setCarriageWaySearch={setCarriageWaySearch}
+                        removeMarkersAndFeatures={removeMarkersAndFeatures}
                     />            
                 )}  
                 
