@@ -345,7 +345,9 @@
     "feature": {
       "title": "Feature search",
       "warn": "Maximum number of results exceeded, try specifying your search.",
-      "noResults": "No results"
+      "noResults": "No results",
+      "errorLayerStart": "Error searching for layer ' ",
+      "errorLayerEnd": " ' features!"
     },
     "track" : {
       "tracknumber" : "Track number",

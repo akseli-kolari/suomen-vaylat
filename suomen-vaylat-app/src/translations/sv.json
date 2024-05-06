@@ -344,7 +344,9 @@
     "feature": {
       "title": "Objektsökning",
       "warn": "Det maximala antalet sökresultat har överskridits, förfina din sökning.",
-      "noResults": "Inga resultat"
+      "noResults": "Inga resultat",
+      "errorLayerStart": "Fel vid sökning efter objekt på kartnivån ' ",
+      "errorLayerEnd": " ' !"
     },
     "track" : {
       "tracknumber" : "Bannummer",
