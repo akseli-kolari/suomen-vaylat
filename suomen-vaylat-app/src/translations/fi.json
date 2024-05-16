@@ -380,7 +380,9 @@
     "feature": {
       "title": "Kohdehaku",
       "warn": "Hakutuloksien enimmäismäärä ylitetty, tarkenna hakuasi.",
-      "noResults": "Ei tuloksia"
+      "noResults": "Ei tuloksia",
+      "errorLayerStart": "Virhe tason ' ",
+      "errorLayerEnd": " ' kohteiden haussa!"
     },
     "track" : {
       "tracknumber" : "Ratanumero",
