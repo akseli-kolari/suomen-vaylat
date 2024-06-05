@@ -303,6 +303,7 @@ export const DrawingTools = ({isOpen}) => {
     const drawingToolsData = [
         {
             id : 'sv-measure-linestring',
+            title: strings.accessibility.drawtools.line,
             name : strings.tooltips.drawingTools.linestring,
             style : {
                 icon : svLinestring
@@ -311,6 +312,7 @@ export const DrawingTools = ({isOpen}) => {
         },
         {
             id : 'sv-measure-polygon',
+            title: strings.accessibility.drawtools.polygon,
             name : strings.tooltips.drawingTools.polygon,
             style : {
                 icon : svPolygon
@@ -319,6 +321,7 @@ export const DrawingTools = ({isOpen}) => {
         },
         {
             id : 'sv-measure-square',
+            title: strings.accessibility.drawtools.square,
             name : strings.tooltips.drawingTools.square,
             style : {
                 icon : svSquare
@@ -327,6 +330,7 @@ export const DrawingTools = ({isOpen}) => {
         },
         {
             id : 'sv-measure-box',
+            title: strings.accessibility.drawtools.box,
             name : strings.tooltips.drawingTools.box,
             style : {
                 icon : svRectangle
@@ -335,6 +339,7 @@ export const DrawingTools = ({isOpen}) => {
         },
         {
             id : 'sv-measure-circle',
+            title: strings.accessibility.drawtools.circle,
             name : strings.tooltips.drawingTools.circle,
             style : {
                 icon : svCircle
@@ -343,6 +348,7 @@ export const DrawingTools = ({isOpen}) => {
         },
         {
             id: 'sv-add-marker',
+            title: strings.accessibility.drawtools.marker,
             name: strings.tooltips.drawingTools.marker,
             style: {
                 icon: faMapMarkerAlt
@@ -350,6 +356,7 @@ export const DrawingTools = ({isOpen}) => {
         },
         {
             id : 'sv-erase',
+            title: strings.accessibility.drawtools.erase,
             name : strings.tooltips.drawingTools.erase,
             style : {
                 icon : faEraser
@@ -385,10 +392,11 @@ export const DrawingTools = ({isOpen}) => {
                                 type="drawingTool"
                                 tooltipDirection={"right"}
                             >
-                                <StyledIcon src={tool.style && tool.style.icon}/>
+                                <StyledIcon title={tool.title} src={tool.style && tool.style.icon}/>
                             </CircleButton> : tool.id === "sv-erase" ?
                             <CircleButton
                                 key={tool.id}
+                                title={tool.title} 
                                 icon={faEraser}
                                 text={tool.name}
                                 clickAction={eraseDrawing}

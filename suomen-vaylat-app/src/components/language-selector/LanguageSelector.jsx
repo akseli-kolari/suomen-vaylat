@@ -52,11 +52,12 @@ export const LanguageSelector = () => {
     };
 
     return (
-        <StyledLanguageSelector>
+        <StyledLanguageSelector aria-label={strings.accessibility.langSelectMenu} >
                 <FontAwesomeIcon
                     icon={faGlobe}
                 />
             <StyledSelect
+                aria-label={strings.accessibility.langSelect}
                 name="language_selector"
                 value={lang.current}
                 onChange={(event) => {
@@ -66,6 +67,7 @@ export const LanguageSelector = () => {
                 {strings.getAvailableLanguages().map((value, index) => {
                         return  (
                         <option
+                            aria-label={strings.accessibility.lang + value}
                             key={'lang-'+value}
                             value={value}
                         >

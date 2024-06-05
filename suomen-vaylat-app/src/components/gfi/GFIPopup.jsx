@@ -916,7 +916,7 @@ export const GFIPopup = ({ handleGfiDownload }) => {
                 vkmData.vkm.kuntakoodi.toString().padStart(3, "0") +
                 ".gif"
               }
-              alt=""
+              alt={vkmData.vkm.kuntanimi}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null; // prevents looping
                 setPointInfoImageError(true);

@@ -1075,5 +1075,31 @@
       "includes" : "Includes",
       "doesntInclude" : "Doesn't include"
     }
+  },
+  "accessibility": {
+    "langSelectMenu": "Language selection menu",
+    "langSelect": "Language selection",
+    "lang": "Language",
+    "vaylaLink": "Link to Väylä webpage",
+    "closeLegends": "Close map legends",
+    "closeLegendsLayer": "Close maplayer legends ",
+    "openLegendsLayer": "Open maplayer legends ",
+    "legendImage": "Legend image",
+    "openLayerGroup": "Open layer group ",
+    "closeLayerGroup": "Close layer group ",
+    "layerInfo": "Layer info",
+    "closeLayer": "Close layer",
+    "opacitySlider": "Adjust layer opacity",
+    "openFiltering": "Open filtering for layer",
+    "zoomRange": "Zoom range",
+    "drawtools": {
+      "line": "Line",
+      "polygon": "Polygon",
+      "square": "Square",
+      "box": "Box",
+      "circle": "Circle",
+      "marker": "Marker",
+      "erase": "Erase"
+    }
   }
 }

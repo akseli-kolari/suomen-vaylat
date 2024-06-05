@@ -233,6 +233,7 @@ export const Header = () => {
                 </StyledHeaderTitleContainer>
                 <StyledHeaderLogoContainer>
                     <a
+                        aria-label={strings.accessibility.vaylaLink}
                         href={
                             lang.current === 'fi' ? "https://vayla.fi/etusivu" :
                             lang.current === 'en' ? "https://vayla.fi/en/frontpage" :

@@ -168,6 +168,7 @@ const ZoomBar = ({
                             );
                         })}
                         <StyledZoomBarSlider
+                        aria-label={strings.accessibility.zoomRange}
                             type="range"
                             orient="vertical"
                             max="13"
