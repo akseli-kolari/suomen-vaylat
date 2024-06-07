@@ -78,10 +78,6 @@ export const showNonThemeLayers = (store, channel) => {
  * @param {Number} selectedThemeId
  */
 export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme, selectedThemeId) => {
-    console.log(theme);
-    console.log(allLayers);
-
-
     const closeAllThemeLayers = (theme) => {
         // close all theme layers
         theme?.layers?.forEach(layerId => {
@@ -113,26 +109,9 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
             })
             allLayers && layers.length > 0 && layers.forEach(layerId => {
                 const filteredLayer = allLayers.find(l => l.id === layerId);
-
-                console.log(Array.isArray(filteredLayer.config.themes));
-                console.log(Array.isArray(filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default));
-                filteredLayer.config?.themes?.forEach(t => {
-                    console.log(t.name["fi"].toLowerCase());
-                    console.log(theme.locale["fi"].name.toLowerCase())
-                    console.log(t.name["fi"].toLowerCase == theme.locale["fi"].name.toLowerCase);
-
-                    console.log(t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase);
-                });
                 const isThemesArray = Array.isArray(filteredLayer.config.themes);
                 const foundMatch = filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase() === theme.locale["fi"].name.toLowerCase());
-                console.log(isThemesArray);
-                console.log(foundMatch);
-
                 if (isThemesArray && foundMatch && foundMatch.default) {
-                    console.log(layerId);
-                    console.log(allLayers);
-
-
                     channel.postRequest('MapModulePlugin.MapLayerVisibilityRequest', [layerId, true]);
                 }
             });
@@ -169,9 +148,9 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
                 })
                 allLayers && layers.length > 0 && layers.forEach(layerId => {
                     const filteredLayer = allLayers.find(l => l.id === layerId);
-                    if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default) {
-                        console.log(layerId);
-                        console.log(allLayers);
+                    const isThemesArray = Array.isArray(filteredLayer.config.themes);
+                    const foundMatch = filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase() === theme.locale["fi"].name.toLowerCase());
+                    if (isThemesArray && foundMatch && foundMatch.default) {
                         channel.postRequest('MapModulePlugin.MapLayerVisibilityRequest', [layerId, true]);
                     }
                 });
