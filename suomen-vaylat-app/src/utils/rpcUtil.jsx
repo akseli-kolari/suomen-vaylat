@@ -117,13 +117,13 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
                 console.log(Array.isArray(filteredLayer.config.themes));
                 console.log(Array.isArray(filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default));
                 filteredLayer.config?.themes?.forEach(t => {
-                    console.log(t.name["fi"].toLowerCase);
-                    console.log(theme.locale["fi"].name.toLowerCase)
+                    console.log(t.name["fi"].toLowerCase());
+                    console.log(theme.locale["fi"].name.toLowerCase())
                     console.log(t.name["fi"].toLowerCase == theme.locale["fi"].name.toLowerCase);
 
                     console.log(t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase);
                 });
-                if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default) {
+                if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase() === theme.locale["fi"].name.toLowerCase()).default) {
                     console.log(layerId);
                     console.log(allLayers);
 
