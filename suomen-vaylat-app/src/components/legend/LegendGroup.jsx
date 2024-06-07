@@ -122,7 +122,7 @@ export const LegendGroup = ({ legend }) => {
 
                 </StyledLeftContent>
                 <StyledRightContent>
-                    <StyledSelectButton>
+                    <StyledSelectButton aria-label={isOpen ? strings.accessibility.closeLegendsLayer + legend.layerName : strings.accessibility.openLegendsLayer + legend.layerName}>
                             <StyledMotionIconWrapper
                                 initial="open"
                                 animate={isOpen ? "open" : "closed"}
@@ -157,7 +157,7 @@ export const LegendGroup = ({ legend }) => {
                 }
                 {legend.legend !== null &&
                     <StyledLegend>
-                        <StyledLegendImage key={legend.legend}
+                        <StyledLegendImage aria-label={strings.accessibility.legendImage} key={legend.legend}
                             src={legend.legend.indexOf('action') > -1 ? process.env.REACT_APP_PUBLISHED_MAP_DOMAIN + legend.legend : (legend.legend.indexOf('?') > 0 ? legend.legend : legend.legend )}
                         ></StyledLegendImage>
                     </StyledLegend>
