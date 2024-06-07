@@ -78,6 +78,9 @@ export const showNonThemeLayers = (store, channel) => {
  * @param {Number} selectedThemeId
  */
 export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme, selectedThemeId) => {
+    console.log(theme);
+    console.log(allLayers);
+
 
     const closeAllThemeLayers = (theme) => {
         // close all theme layers
@@ -111,6 +114,10 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
             allLayers && layers.length > 0 && layers.forEach(layerId => {
                 const filteredLayer = allLayers.find(l => l.id === layerId);
                 if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default) {
+                    console.log(layerId);
+                    console.log(allLayers);
+
+
                     channel.postRequest('MapModulePlugin.MapLayerVisibilityRequest', [layerId, true]);
                 }
             });
@@ -148,6 +155,8 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
                 allLayers && layers.length > 0 && layers.forEach(layerId => {
                     const filteredLayer = allLayers.find(l => l.id === layerId);
                     if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default) {
+                        console.log(layerId);
+                        console.log(allLayers);
                         channel.postRequest('MapModulePlugin.MapLayerVisibilityRequest', [layerId, true]);
                     }
                 });
