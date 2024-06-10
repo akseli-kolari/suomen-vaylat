@@ -98,6 +98,7 @@ const CircleButton = ({
         }
 
         <StyledCircleButton
+            aria-label={text}
             onClick={() => clickAction()}
             onHoverStart={() => { 
                 text && !useReactTooltip && setHovered(true);

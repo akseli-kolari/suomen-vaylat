@@ -234,8 +234,7 @@ const StyledMotionIconWrapper = styled(motion.div)`
   align-items: center;
 `;
 
-const StyledLayerGroup = styled(motion.ul)`
-  list-style-type: none;
+const StyledLayerGroup = styled(motion.div)`
   margin: 0;
   padding-inline-start: ${(props) => (props.parentId === -1 ? "8px" : "25px")};
   overflow: hidden;
@@ -577,7 +576,17 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
               </StyledMasterGroupTitleContent>
             </StyledLeftContent>
             <StyledRightContent>
-              <StyledSelectButton>
+              <StyledSelectButton aria-label={isOpen ? strings.accessibility.closeLayerGroup + group.locale[currentLang] && group.locale[currentLang].name
+                    ? group.locale[currentLang].name
+                    : group.locale[defaultLang] &&
+                      group.locale[defaultLang].name
+                    ? group.locale[defaultLang].name
+                    : group.id : strings.accessibility.openLayerGroup + group.locale[currentLang] && group.locale[currentLang].name
+                    ? group.locale[currentLang].name
+                    : group.locale[defaultLang] &&
+                      group.locale[defaultLang].name
+                    ? group.locale[defaultLang].name
+                    : group.id}>
                 <StyledMotionIconWrapper
                   initial="closed"
                   animate={isOpen ? "open" : "closed"}

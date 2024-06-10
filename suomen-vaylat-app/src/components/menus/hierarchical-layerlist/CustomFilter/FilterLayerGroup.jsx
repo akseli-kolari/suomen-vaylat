@@ -233,8 +233,7 @@ const StyledMotionIconWrapper = styled(motion.div)`
   align-items: center;
 `;
 
-const StyledLayerGroup = styled(motion.ul)`
-  list-style-type: none;
+const StyledLayerGroup = styled(motion.div)`
   margin: 0;
   padding-inline-start: ${(props) => (props.parentId === -1 ? "8px" : "25px")};
   overflow: hidden;

@@ -144,8 +144,7 @@ const StyledSelectButton = styled.button`
     };
 `;
 
-const StyledLayerGroup = styled(motion.ul)`
-    list-style-type: none;
+const StyledLayerGroup = styled(motion.div)`
     margin: 0;
     padding-inline-start: 25px;
     overflow: hidden;

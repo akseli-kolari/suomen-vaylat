@@ -1075,5 +1075,31 @@
       "includes" : "Innehåller",
       "doesntInclude" : "Inte innehåller"
     }
+  },
+  "tillgänglighet": {
+    "langSelectMenu": "Språkvalsmeny",
+    "langSelect": "Språkval",
+    "lang": "Språk",
+    "vaylaLink": "Länk till Väylä webbsida",
+    "closeLegends": "Stäng kartförklaringar",
+    "closeLegendsLayer": "Stäng maplayer-legender",
+    "openLegendsLayer": "Öppna maplayer-legender",
+    "legendImage": "Legendbild",
+    "openLayerGroup": "Öppen lagergrupp",
+    "closeLayerGroup": "Stäng lagergrupp ",
+    "layerInfo": "Lagerinformation",
+    "closeLayer": "Stäng lager",
+    "opacitySlider": "Justera lageropaciteten",
+    "openFiltering": "Öppna filtrering för lager",
+    "zoomRange": "Zoomområde",
+    "drawtools": {
+      "line": "Linje",
+      "polygon": "Polygon",
+      "square": "Square",
+      "box": "Låda",
+      "circle": "Cirkel",
+      "marker": "Markör",
+      "erase": "Radera"
+    }
   }
 }

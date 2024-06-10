@@ -1124,5 +1124,31 @@
       "includes" : "Sisältää",
       "doesntInclude" : "Ei sisällä"
     }
+  },
+  "accessibility": {
+    "langSelectMenu": "Kielen valinta menu",
+    "langSelect": "Kielen valinta",
+    "lang": "Kieli",
+    "vaylaLink": "Linkki Väylän sivuille",
+    "closeLegends": "Sulje karttaselitteet",
+    "closeLegendsLayer": "Sulje karttaselitteet tasolle ",
+    "openLegendsLayer": "Avaa karttaselitteet tasolle ",
+    "legendImage": "Karttaselite kuva",
+    "openLayerGroup": "Avaa tasoryhmä ",
+    "closeLayerGroup": "Sulje tasoryhmä ",
+    "layerInfo": "Tason tiedot",
+    "closeLayer": "Sulje taso",
+    "opacitySlider": "Säädä tason läpinäkyvyyttä",
+    "openFiltering": "Avaa tason suodatus",
+    "zoomRange": "Zoom asteikko",
+    "drawtools": {
+      "line": "Viiva",
+      "polygon": "Monikulmio",
+      "square": "Neliö",
+      "box": "Laatikko",
+      "circle": "Ympyrä",
+      "marker": "Karttamerkintä",
+      "erase": "Tyhjennä"
+    }
   }
 }

@@ -244,8 +244,7 @@ const StyledLayerGroupImage = styled.img`
     object-fit: cover;
 `;
 
-const StyledLayerGroup = styled.ul`
-    list-style-type: none;
+const StyledLayerGroup = styled.div`
     padding-inline-start: 0px;
     margin: 0;
 `;

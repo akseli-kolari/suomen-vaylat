@@ -135,6 +135,7 @@ export const Legend = ({
                     <p data-tip data-for="legendHeader">{strings.legend.title}</p>
                 </StyledTitleContent>
                     <StyledCloseIcon
+                        aria-label={strings.accessibility.closeLegends}
                         icon={faTimes}
                         onClick={() => setIsExpanded(false)}
                     />

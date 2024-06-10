@@ -179,7 +179,6 @@ export const ListComponent = ({listData}) => {
         <ul>
             {Object.values(listData).map((item) => {
                 return (
-                    <div key={'app-info-list-content-' + item.title || item}>
                         <li key={'app-info-lc-li-' + item.title || item}>{item.title || item}
                             {item.list &&
                                 <ul key={'app-info-lc-ul-' + item.title || item}>
@@ -201,7 +200,6 @@ export const ListComponent = ({listData}) => {
                                 </ul>
                             }
                         </li>
-                    </div>
                 );
             })}
         </ul>
