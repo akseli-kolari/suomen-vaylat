@@ -607,7 +607,17 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <StyledLefContent>
-              <StyledSelectButton subGroup={true}>
+              <StyledSelectButton aria-label={isOpen ? strings.accessibility.closeSubLayerGroup + group.locale[currentLang] && group.locale[currentLang].name
+                    ? group.locale[currentLang].name
+                    : group.locale[defaultLang] &&
+                      group.locale[defaultLang].name
+                    ? group.locale[defaultLang].name
+                    : group.id : strings.accessibility.openSubLayerGroup + group.locale[currentLang] && group.locale[currentLang].name
+                    ? group.locale[currentLang].name
+                    : group.locale[defaultLang] &&
+                      group.locale[defaultLang].name
+                    ? group.locale[defaultLang].name
+                    : group.id} subGroup={true}>
                 <StyledMotionIconWrapper
                   initial="closed"
                   animate={isOpen ? "open" : "closed"}

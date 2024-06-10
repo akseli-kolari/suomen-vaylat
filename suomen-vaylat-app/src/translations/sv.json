@@ -1087,6 +1087,8 @@
     "legendImage": "Legendbild",
     "openLayerGroup": "Öppen lagergrupp",
     "closeLayerGroup": "Stäng lagergrupp ",
+    "openSubLayerGroup": "Öppna en undergrupp ",
+    "closeSubLayerGroup": "Stäng undergruppen ",
     "layerInfo": "Lagerinformation",
     "closeLayer": "Stäng lager",
     "opacitySlider": "Justera lageropaciteten",

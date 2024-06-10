@@ -1088,6 +1088,8 @@
     "legendImage": "Legend image",
     "openLayerGroup": "Open layer group ",
     "closeLayerGroup": "Close layer group ",
+    "openSubLayerGroup": "Open subgroup ",
+    "closeSubLayerGroup": "Close subgroup ",
     "layerInfo": "Layer info",
     "closeLayer": "Close layer",
     "opacitySlider": "Adjust layer opacity",

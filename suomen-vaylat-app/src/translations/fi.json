@@ -1136,6 +1136,8 @@
     "legendImage": "Karttaselite kuva",
     "openLayerGroup": "Avaa tasoryhmä ",
     "closeLayerGroup": "Sulje tasoryhmä ",
+    "openSubLayerGroup": "Avaa aliryhmä ",
+    "closeSubLayerGroup": "Sulje aliryhmä ",
     "layerInfo": "Tason tiedot",
     "closeLayer": "Sulje taso",
     "opacitySlider": "Säädä tason läpinäkyvyyttä",
