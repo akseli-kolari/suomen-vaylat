@@ -9,7 +9,7 @@ import strings from '../../../translations';
 import { setZoomTo } from '../../../state/slices/rpcSlice';
 import { setWarning } from '../../../state/slices/uiSlice';
 import { selectGroup } from '../../../utils/rpcUtil';
-import Layers from './Layers';
+import Layers from '../hierarchical-layerlist/Layers';
 
 import hankekartta from './hankekartta.JPG';
 import intersection from './Intersection.jpg';
