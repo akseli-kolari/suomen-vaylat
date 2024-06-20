@@ -4,12 +4,11 @@ import { faMap } from '@fortawesome/free-solid-svg-icons';
 
 import { useAppSelector } from '../../../state/hooks';
 
-import ThemeLayerList from './ThemeLayerList';
+import ThemeLayerList from '../hierarchical-layerlist/ThemeLayerList';
 import DialogHeader from '../../dialog/DialogHeader';
 import strings from '../../../translations';
 import store from '../../../state/store';
 import { setIsThemeMenuOpen } from '../../../state/slices/uiSlice';
-import ThemeSearch from './ThemeSearch';
 
 const StyledThemeMenuContainer = styled(motion.div)`
     width: 350px;
@@ -76,7 +75,6 @@ function ThemeMenu() {
                 variants={variants}
             >
                 <DialogHeader icon={faMap} title={strings.layerlist.layerlistLabels.themeLayers} handleClose={() => store.dispatch(setIsThemeMenuOpen(false))}/>
-                <ThemeSearch></ThemeSearch>
                 <ThemeLayerList
                     allLayers={allLayers}
                     allThemes={allThemesWithLayers}
