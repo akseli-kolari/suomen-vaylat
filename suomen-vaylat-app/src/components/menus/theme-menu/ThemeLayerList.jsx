@@ -206,7 +206,7 @@ const StyledSelectButton = styled.div`
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    margin-right: 16px;
+    margin: 1em;
     border: 2px solid white;
     border-radius: 50%;
     &:before {
@@ -235,6 +235,12 @@ const StyledLayerGroupContainer = styled(motion.div)`
 `;
 
 const StyledInfoHeaderIconContainer = styled(motion.div)`
+    color: ${props => props.theme.colors.mainWhite};
+`;
+
+
+const StyledThemeArrow = styled(motion.div)`
+    margin: 1em;
     color: ${props => props.theme.colors.mainWhite};
 `;
 
@@ -475,6 +481,7 @@ export const ThemeGroup = ({
     selectGroup,
     isSubtheme
 }) => {
+    const [isThemeOpen, setIsThemeOpen] = useState(false);
     const [subthemeIsOpen, setSubthemeIsOpen] = useState(false);
     const [totalGroupLayersCount, setTotalGroupLayersCount] = useState(0);
     const [totalVisibleGroupLayersCount, setTotalVisibleGroupLayersCount] = useState(0);
@@ -509,20 +516,30 @@ export const ThemeGroup = ({
             {!isSubtheme ?
                 <StyledMasterGroupHeader
                     key={'smgh_' + theme.id}
-                    onClick={() => {
-                        selectGroup(theme);
-                    }}
-                    isOpen={isOpen}
+                    isOpen={isThemeOpen}
                 >
-                    <StyledLeftContent>
-                        <StyledMasterGroupHeaderIcon>
-                            <FontAwesomeIcon
-                                icon={faMap}
-                            />
-                        </StyledMasterGroupHeaderIcon>
-                        <StyledMasterGroupName>{theme.locale[lang].name}</StyledMasterGroupName>
-                    </StyledLeftContent>
-                    <StyledRightContent>
+
+                    <StyledThemeArrow
+                        onClick={() => setIsThemeOpen(!isThemeOpen)}
+                        animate={{
+                            transform: isThemeOpen
+                            ? 'rotate(180deg)'
+                            : 'rotate(0deg)',
+                        }}
+                    >
+                        <FontAwesomeIcon
+                            icon={faAngleDown}
+                        />
+                    </StyledThemeArrow>
+                    <StyledMasterGroupName onClick={() => setIsThemeOpen(!isThemeOpen)}>
+                        {theme.locale[lang].name}
+                    </StyledMasterGroupName>
+                    <StyledRightContent
+                        onClick={(e) => {
+                            !isThemeOpen && setIsThemeOpen(true)
+                            selectGroup(theme);
+                        }}
+                    >
                         <StyledSelectButton
                             isOpen={isOpen}
                         >
@@ -562,7 +579,7 @@ export const ThemeGroup = ({
                 </StyledSubthemeHeader>
             }
                     {
-                        !isOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
+                        !isThemeOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
                             <ThemeDesc
                                 theme={theme}
                                 lang={lang}
@@ -573,7 +590,7 @@ export const ThemeGroup = ({
             <StyledLayerGroupContainer
                 key={'slg_' + index}
                 initial='hidden'
-                animate={isOpen ? 'visible' : 'hidden'}
+                animate={isThemeOpen ? 'visible' : 'hidden'}
                 variants={listVariants}
                 transition={{
                     duration: 0.3,
@@ -596,7 +613,7 @@ export const ThemeGroup = ({
                     }
 
                     {
-                        isOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
+                        isThemeOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
                             <ThemeDesc
                                 theme={theme}
                                 lang={lang}
