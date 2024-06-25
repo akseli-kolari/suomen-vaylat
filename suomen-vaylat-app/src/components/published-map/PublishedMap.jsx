@@ -36,7 +36,7 @@ import {
     setMinimizeGfi,
     addToDrawToolMarkers,
     removeFromDrawToolMarkers,
-    addToGeoJsonArray,
+    addToGeoJsonArray
 } from '../../state/slices/uiSlice';
 import { getActiveAnnouncements, updateLayers } from '../../utils/rpcUtil';
 import SvLoder from '../../components/loader/SvLoader';

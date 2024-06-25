@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ReactReduxContext, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
@@ -136,16 +136,6 @@ export const FilterLayer = ({ layer, theme, groupName }) => {
       );
     }, 1000);
   };
-
-  useEffect(() => {
-    const checkedLayers = localStorage.getItem('checkedLayers');
-    checkedLayers && store.dispatch(
-        setSelectedCustomFilterLayers(JSON.parse(checkedLayers))
-      );
-    // Clear the timeout when the component unmounts
-    return () => clearTimeout(window.legendUpdateTimer);
-
-  }, []);
 
   const themeStyle = theme || null;
 

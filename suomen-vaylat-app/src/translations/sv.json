@@ -420,7 +420,9 @@
       "clearSelectedMapLayers": "Ta bort valda kartnivåer",
       "clearSelectedBackgroundMaps": "Ta bort valda bakgrundskartor",
       "noSearchResults": "Inga sökresultat",
-      "typeAtLeastThreeCharacters": "Mata in minst 3 bokstäver"
+      "typeAtLeastThreeCharacters": "Mata in minst 3 bokstäver",
+      "createCustomFilter": "eget filter"
+
     },
     "selectedLayers": {
       "layerVisible": "Lager synligt",
@@ -428,6 +430,16 @@
       "zoomOutToShowLayer": "Zooma ut för att se kartlagret",
       "toShowLayer" : "för att se kartlagret",
       "opacity": "Genomskinlighet"
+    },
+    "customLayerInfo": {
+      "customFilter": "Eget filter",
+      "modalTitle": "Skapa ditt eget filter",
+      "closeInfo": "Stäng hjälpen",
+      "infoContent": "Du kan använda ditt eget filter för att spara valda lager i webbläsarens cache. Att redigera ditt eget filter är enhetsspecifikt. När du har valt önskade lager, tryck på knappen 'Spara'. Knappen 'Rensa alla' tar bort alla valda lager från filtret.",
+      "saveLayers": "Spara",
+      "removeLayers":"Rensa alla",
+      "editLayers": "Redigera",
+      "saveTooltip": "Välj de lager som ska sparas"
     }
   },
   "downloadLink": {
