@@ -133,7 +133,7 @@ const MenuBar = () => {
         }
     };
 
-    const closeDrawingTools = () => {
+    const closeDrawingTools = (open) => {
         // remove geometries off the map
         channel && channel.postRequest('DrawTools.StopDrawingRequest', []);
         store.dispatch(setGeoJsonArray([]));
@@ -144,7 +144,7 @@ const MenuBar = () => {
         drawToolMarkers.forEach(marker => {
             store.dispatch(removeMarkerRequest({markerId: marker}));
         });
-        store.dispatch(setIsDrawingToolsOpen(!isDrawingToolsOpen));
+        store.dispatch(setIsDrawingToolsOpen(open));
         store.dispatch(setSelectedMarker(2));
         // remove all markers made with drawing tools
         drawToolMarkers.forEach(marker => {
@@ -245,7 +245,7 @@ const MenuBar = () => {
                     toggleState={isGfiDownloadOpen}
                     tooltipDirection={"right"}
                     clickAction={() => {
-                        closeDrawingTools();
+                        closeDrawingTools(false);
                         store.dispatch(setIsGfiDownloadOpen(!isGfiDownloadOpen))
                     }}
                 >
@@ -263,7 +263,7 @@ const MenuBar = () => {
                         text={strings.tooltips.drawingTools.drawingToolsButton}
                         toggleState={isDrawingToolsOpen}
                         tooltipDirection={"right"}
-                        clickAction={closeDrawingTools}
+                        clickAction={() => closeDrawingTools(!isDrawingToolsOpen)}
                     />
                     <DrawingTools isOpen={isDrawingToolsOpen} />
                 </StyledMapToolsContainer>
