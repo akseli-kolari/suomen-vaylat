@@ -314,22 +314,21 @@ const mainThemeImages = {
     }
 };
 
-const getLinks = (text, startTag, endTag) => {
-    let links = [];
-    let index = -1;
-    while (true)
-    {
-        let i = text.indexOf(startTag, index);
+const getDescTagContent = (text, startTag, endTag) => { 
+    let links = []; 
+    let index = 0;
+    
+    while (index < text.length) {
+        let startPos = text.indexOf(startTag, index);
+        if (startPos === -1) break;
 
-        if (i == -1) break;
+        let endPos = text.indexOf(endTag, startPos + startTag.length);
+        if (endPos === -1) break; // Added this to handle cases where the end tag is not found
 
-        if (index == -1) {
-            index = i;
-        } else {
-            let j = text.indexOf(endTag, index);
-            links.push(text.substring(index + startTag.length, j));
-            index = j + endTag.length;
-        }
+        let link = text.substring(startPos + startTag.length, endPos);
+        links.push(link);
+
+        index = endPos + endTag.length;
     }
     return links;
 }
@@ -449,7 +448,7 @@ export const Themes = ({
 
     // Check if desc had url links so those can be displayed as links instead of group themes
     const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
-    const link = txt && getLinks(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
+    const link = txt && getDescTagContent(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
     
     return (
         <>
@@ -507,7 +506,7 @@ export const ThemeGroup = ({
     
     // check if group desc has img tags in order to display linked image instead of possible default
     const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
-    const images = txt && getLinks(txt.replace(/\s/g, ''), "<img>", "</img>") || [];
+    const images = txt && getDescTagContent(txt.replace(/\s/g, ''), "<img>", "</img>") || [];
 
     const themeNameFi = theme.locale["fi"].name.toLowerCase().replace(/\s/g, '');
 
@@ -727,8 +726,8 @@ export const ThemeDesc = ({
     // Get content from desc (surrounded by HTMl tags)
     const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
 
-    const links = getLinks(txt.replace(/\s/g, ''),"<a>", "</a>")
-    const desc = getLinks(txt, "<p>", "</p>")
+    const links = getDescTagContent(txt.replace(/\s/g, ''),"<a>", "</a>")
+    const desc = getDescTagContent(txt, "<p>", "</p>")
     
     const { store } = useContext(ReactReduxContext);
 
