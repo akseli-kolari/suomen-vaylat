@@ -33,7 +33,7 @@ const StyledLayerGroups = styled.div`
     flex-direction: column;
     justify-content: center;
     margin: 8px 0px 8px 0px;
-    padding: 0px 16px;
+    padding-left: ${props => props.isFirstSubtheme ? '0px' : '16px'};
     &:last-child {
         ${props => props.parentId === -1 ? '1px solid '+props.theme.colors.mainColor2 : 'none'};
     };
@@ -287,6 +287,10 @@ const StyledMasterGroupHeaderIconLetter = styled.div`
     }
 `;
 
+const StyledSubthemes = styled.div`
+    padding: 0px 16px;
+`;
+
 const themeImages = {
     hankekartta: hankekartta,
     päällysteidenkuntokartta: intersection,
@@ -361,6 +365,18 @@ export const ThemeLayerList = ({
         linksArray.push(strings.themeLinks[i]);
     }
 
+    const sortThemesAlphabetically = ( a, b ) => {
+        if ( a.locale[lang].name < b.locale[lang].name ){
+        return -1;
+        }
+        if ( a.locale[lang].name > b.locale[lang].name ){
+        return 1;
+        }
+        return 0;
+    }
+
+    allThemes.sort(sortThemesAlphabetically);
+
     return (
         <>
             { allThemes.map((themeGroup, themeGroupIndex) => {
@@ -404,15 +420,10 @@ export const ThemeLayerList = ({
                                 type: "tween"
                             }}
                         >
-                            { themeGroup?.groups?.map((theme, index) => {
-                                return <Themes
-                                    lang={lang}
-                                    key={index}
-                                    theme={theme}
+                                <Themes
+                                    groups={[...themeGroup?.groups]}
                                     allLayers={allLayers}
-                                    index={index}
                                 />
-                            })}
                         </StyledLayerGroupContainer>
                     </>
                 )
@@ -422,13 +433,12 @@ export const ThemeLayerList = ({
     );
   };
 
-export const Themes = ({
-    lang,
-    allLayers,
-    theme,
-    index
+  export const Themes = ({
+    groups,
+    allLayers
 }) => {
     const { store } = useContext(ReactReduxContext);
+    const lang = strings.getLanguage();
 
     const {
         channel,
@@ -436,33 +446,53 @@ export const Themes = ({
         lastSelectedTheme,
         selectedThemeId,
     } = useAppSelector((state) => state.rpc);
-    
     const handleSelectGroup = (theme) => {
         selectGroup(store, channel, allLayers, theme, lastSelectedTheme, selectedThemeId);
     };
 
-    // Check if desc had url links so those can be displayed as links instead of group themes
-    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
-    const link = txt && getLinks(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
+    const sortGroupsAlphabetically = ( a, b ) => {
+        if ( a.locale[lang].name < b.locale[lang].name ){
+        return -1;
+        }
+        if ( a.locale[lang].name > b.locale[lang].name ){
+        return 1;
+        }
+        return 0;
+    }
     
-    return (
-        <>
-            { link.length > 0 ?
-                <ThemeLinkList index={index} link={link} theme={theme} lang={lang}/>
-            :
-                <ThemeGroup
-                    key={index}
-                    lang={lang}
-                    theme={theme}
-                    layers={allLayers}
-                    index={index}
-                    selectedTheme={selectedTheme}
-                    selectGroup={handleSelectGroup}
-                    selectedThemeId={selectedThemeId}
-                    isSubtheme={false}
-                />
+    let links = [];
+    let themes = [];
+    groups.sort(sortGroupsAlphabetically).forEach((group, index) => {
+            // Check if desc had url links so those can be displayed as links instead of group themes
+            const txt = group.locale[lang].desc && group.locale[lang].desc.length > 0 && group.locale[lang].desc;
+            const link = getLinks(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
+            if (link.length > 0) {
+                links.push({group, link, index});
+            } else {
+                themes.push({group, index});
             }
-        </>
+    })
+
+    return (
+        <StyledSubthemes>
+            { themes.length > 0 && themes.map(theme => {
+                return <ThemeGroup
+                key={theme.index}
+                lang={lang}
+                theme={theme.group}
+                layers={allLayers}
+                index={theme.index}
+                selectedTheme={selectedTheme}
+                selectGroup={handleSelectGroup}
+                selectedThemeId={selectedThemeId}
+                isSubtheme={false}
+                isFirstSubtheme={true}
+                />
+            })}
+            { links.length > 0 && links.map(link => {
+                return <ThemeLinkList isFirstSubtheme={true} index={link.index} link={link.link} theme={link.group} lang={lang}/>
+            })}
+        </StyledSubthemes>
     )
 };
 
@@ -473,7 +503,8 @@ export const ThemeGroup = ({
     index,
     selectedThemeId,
     selectGroup,
-    isSubtheme
+    isSubtheme,
+    isFirstSubtheme
 }) => {
     const [subthemeIsOpen, setSubthemeIsOpen] = useState(false);
     const [totalGroupLayersCount, setTotalGroupLayersCount] = useState(0);
@@ -494,6 +525,16 @@ export const ThemeGroup = ({
         layersCounter(theme);
     },[theme, layers]);
 
+    const sortGroupsAlphabetically = ( a, b ) => {
+        if ( a.locale[lang].name < b.locale[lang].name ){
+        return -1;
+        }
+        if ( a.locale[lang].name > b.locale[lang].name ){
+        return 1;
+        }
+        return 0;
+    }
+
     var filteredLayers = layers.filter(layer => theme.layers?.includes(layer.id));
 
     const isOpen = isSubtheme ? subthemeIsOpen : theme.id === selectedThemeId || (theme.hasOwnProperty("groups") && theme.groups.find(t => t.id === selectedThemeId));
@@ -504,8 +545,14 @@ export const ThemeGroup = ({
 
     const themeNameFi = theme.locale["fi"].name.toLowerCase().replace(/\s/g, '');
 
+    let groups = [];
+    if (theme.groups) {
+        groups = [...theme.groups];
+        groups.sort(sortGroupsAlphabetically);
+    }
+
     return (
-        <StyledLayerGroups index={index}>
+        <StyledLayerGroups isFirstSubtheme={isFirstSubtheme} isSubtheme={isSubtheme} index={index}>
             {!isSubtheme ?
                 <StyledMasterGroupHeader
                     key={'smgh_' + theme.id}
@@ -607,7 +654,7 @@ export const ThemeGroup = ({
                     <Layers layers={filteredLayers} isOpen={isOpen} themeName={theme.locale[lang].name}/>
                 </StyledLayerGroup>
 
-                {theme.groups && theme.groups.map((subtheme, index) => {
+                {groups.map((subtheme, index) => {
                         return (
                             <ThemeGroup
                                 key={index}
@@ -618,6 +665,7 @@ export const ThemeGroup = ({
                                 selectGroup={selectGroup}
                                 selectedThemeId={selectedThemeId}
                                 isSubtheme={true}
+                                isFirstSubtheme={!isSubtheme}
                             />
                         );
                     })
@@ -632,7 +680,8 @@ export const ThemeLinkList = ({
     theme,
     link,
     lang,
-    index
+    index,
+    isFirstSubtheme
 }) => {
     
     const { store } = useContext(ReactReduxContext);
@@ -668,7 +717,7 @@ export const ThemeLinkList = ({
 
     return (
         <>
-            <StyledLayerGroups index={index}>
+            <StyledLayerGroups  isFirstSubtheme={isFirstSubtheme} isSubtheme={false} index={index}>
                 <StyledMasterGroupHeader
                     key={'theme_link_'+theme.locale[lang].name}
                     onClick={(e) => handleLinkClick(e,link)}
