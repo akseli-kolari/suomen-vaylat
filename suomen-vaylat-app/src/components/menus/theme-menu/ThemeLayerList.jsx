@@ -8,7 +8,7 @@ import { useAppSelector } from '../../../state/hooks';
 import strings from '../../../translations';
 import { setZoomTo } from '../../../state/slices/rpcSlice';
 import { setWarning } from '../../../state/slices/uiSlice';
-import { selectGroup } from '../../../utils/rpcUtil';
+import { selectGroup, sortObjectAlphabetically } from '../../../utils/rpcUtil';
 import Layers from '../hierarchical-layerlist/Layers';
 
 import hankekartta from './hankekartta.JPG';
@@ -370,17 +370,7 @@ export const ThemeLayerList = ({
         linksArray.push(strings.themeLinks[i]);
     }
 
-    const sortThemesAlphabetically = ( a, b ) => {
-        if ( a.locale[lang].name < b.locale[lang].name ){
-        return -1;
-        }
-        if ( a.locale[lang].name > b.locale[lang].name ){
-        return 1;
-        }
-        return 0;
-    }
-
-    allThemes.sort(sortThemesAlphabetically);
+    allThemes.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name));
 
     return (
         <>
@@ -455,19 +445,9 @@ export const ThemeLayerList = ({
         selectGroup(store, channel, allLayers, theme, lastSelectedTheme, selectedThemeId);
     };
 
-    const sortGroupsAlphabetically = ( a, b ) => {
-        if ( a.locale[lang].name < b.locale[lang].name ){
-        return -1;
-        }
-        if ( a.locale[lang].name > b.locale[lang].name ){
-        return 1;
-        }
-        return 0;
-    }
-    
     let links = [];
     let themes = [];
-    groups.sort(sortGroupsAlphabetically).forEach((group, index) => {
+    groups.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name)).forEach((group, index) => {
             // Check if desc had url links so those can be displayed as links instead of group themes
             const txt = group.locale[lang].desc && group.locale[lang].desc.length > 0 && group.locale[lang].desc;
             const link = getDescTagContent(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
@@ -531,16 +511,6 @@ export const ThemeGroup = ({
         layersCounter(theme);
     },[theme, layers]);
 
-    const sortGroupsAlphabetically = ( a, b ) => {
-        if ( a.locale[lang].name < b.locale[lang].name ){
-        return -1;
-        }
-        if ( a.locale[lang].name > b.locale[lang].name ){
-        return 1;
-        }
-        return 0;
-    }
-
     var filteredLayers = layers.filter(layer => theme.layers?.includes(layer.id));
 
     const isOpen = isSubtheme ? subthemeIsOpen : theme.id === selectedThemeId || (theme.hasOwnProperty("groups") && theme.groups.find(t => t.id === selectedThemeId));
@@ -554,7 +524,7 @@ export const ThemeGroup = ({
     let groups = [];
     if (theme.groups) {
         groups = [...theme.groups];
-        groups.sort(sortGroupsAlphabetically);
+        groups.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name));
     }
 
     return (

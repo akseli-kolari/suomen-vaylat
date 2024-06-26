@@ -189,6 +189,22 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
 };
 
 /**
+* Sort object values alphabetically i.ex. themes group names
+* @param {string} a first comparable value
+* @param {string} b second comparable value
+* @method sortObjectAlphabetically
+*/
+export const sortObjectAlphabetically = ( a, b ) => {
+    if ( a < b ){
+    return -1;
+    }
+    if ( a > b ){
+    return 1;
+    }
+    return 0;
+}
+
+/**
 * Rearrange object array according to other array.
 * @param {Object} objectArray
 * @param {Array} order

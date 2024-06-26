@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
-
+import { sortObjectAlphabetically } from '../../../utils/rpcUtil';
 import { useAppSelector } from '../../../state/hooks';
-
 import ThemeLayerList from './ThemeLayerList';
 import DialogHeader from '../../dialog/DialogHeader';
 import strings from '../../../translations';
@@ -59,17 +58,8 @@ function ThemeMenu() {
         },
     };
 
-    const sortLayersAlphabetically = ( a, b ) => {
-        if ( a.name < b.name ){
-        return -1;
-        }
-        if ( a.name > b.name ){
-        return 1;
-        }
-        return 0;
-    }
     let sortedLayers = [...allLayers];
-    sortedLayers.sort(sortLayersAlphabetically);
+    sortedLayers.sort((a, b) => sortObjectAlphabetically(a.name, b.name));
 
     return (
         <AnimatePresence>
