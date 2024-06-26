@@ -421,7 +421,8 @@
       "clearSelectedMapLayers": "Clear selected map layers",
       "clearSelectedBackgroundMaps": "Clear selected background maps",
       "noSearchResults": "No search results",
-      "typeAtLeastThreeCharacters": "Type at least 3 characters"
+      "typeAtLeastThreeCharacters": "Type at least 3 characters",
+      "createCustomFilter": "custom filter"
     },
     "selectedLayers": {
       "layerVisible": "Layer visible",
@@ -429,6 +430,16 @@
       "zoomOutToShowLayer": "Zoom out to see the map layer",
       "toShowLayer" : "to see the map layer",
       "opacity": "Transparency"
+    },
+    "customLayerInfo": {
+      "customFilter": "Custom filter",
+      "modalTitle": "Create custom filter",
+      "closeInfo": "Close info",
+      "infoContent": "You can use your custom filter to save selected layers in the browser's cache. Editing your custom filter is device-specific. Once you have selected the desired layers, press the 'Save' button. The 'Clear All' button removes all selected layers from the filter.",
+      "saveLayers": "Save",
+      "removeLayers":"Clear all",
+      "editLayers": "Edit",
+      "saveTooltip": "Choose custom filter layers"
     }
   },
   "downloadLink": {

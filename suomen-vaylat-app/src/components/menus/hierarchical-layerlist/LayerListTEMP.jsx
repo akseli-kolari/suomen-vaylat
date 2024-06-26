@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
 import store from "../../../state/store";
 import { faAngleUp, faAngleDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,7 +7,6 @@ import { useAppSelector } from "../../../state/hooks";
 import { motion } from "framer-motion";
 import strings from "../../../translations";
 import {
-  setMapLayerVisibility,
   setTagLayers,
   setTags,
 } from "../../../state/slices/rpcSlice";
@@ -18,10 +17,7 @@ import ReactTooltip from "react-tooltip";
 import { isMobile, theme } from "../../../theme/theme";
 import {
   setIsCustomFilterOpen,
-  setIsSavedLayer,
   setShowSavedLayers,
-  setIsCheckmark,
-  setShowCustomLayerList,
   setCheckedLayer,
   setSelectedCustomFilterLayers,
 } from "../../../state/slices/uiSlice";
@@ -39,33 +35,6 @@ const listVariants = {
   },
 };
 
-const StyledRowContainer = styled.div`
-
-`;
-
-const StyledButtonContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 5px;
-  align-items: center;
-  margin-top: 20px;
-  gap: 30px;
-`;
-
-const StyledSaveButton = styled.div`
-  width: 78px;
-  height: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 30px;
-  background-color: ${(props) =>
-    props.isOpen ? "#004477" : props.theme.colors.mainColor1};
-  cursor: pointer;
-  font-size: 13px;
-  color: #fff;
-`;
-
 const StyledFilterList = styled(motion.div)`
   height: ${(props) => (props.isOpen ? "auto" : 0)};
   overflow: hidden;
@@ -74,6 +43,7 @@ const StyledFilterList = styled(motion.div)`
   justify-content: center;
   color: ${(props) => props.theme.colors.mainColor1};
   background-color: ${(props) => props.theme.colors.mainWhite};
+  margin-bottom: 8px;
 `;
 
 const StyledFiltersContainer = styled.div`
@@ -83,8 +53,8 @@ const StyledFiltersContainer = styled.div`
 
 const StyledDeleteAllSelectedFilters = styled.div`
   cursor: pointer;
-  max-width: 184px;
   min-height: 32px;
+  padding: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -97,15 +67,15 @@ const StyledDeleteAllSelectedFilters = styled.div`
   }
   p {
     margin: 0;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 500;
   }
 `;
 
 const StyledSearchAndFilter = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 5px 8px 8px 16px;
+  align-items: flex-start;
 `;
 
 const StyledCustomFilterButton = styled.div`
@@ -117,28 +87,25 @@ const StyledCustomFilterButton = styled.div`
   background-color: ${(props) =>
     props.isSelected
       ? props.theme.colors.mainColor2
-      : props.theme.colors.white};
+      : props.theme.colors.mainWhite};
   margin: 2px;
   border: 1px solid ${(props) => props.theme.colors.mainColor2};
   border-radius: 20px;
   font-size: 13px;
   transition: all 0.1s ease-out;
+  color: ${props => props.isSelected && props.theme.colors.mainWhite};
   &:hover {
+    color: ${props => props.theme.colors.mainWhite};
     background-color: ${(props) => props.theme.colors.mainColor3};
   }
 `;
 
 const StyledFilterButton = styled.div`
-  width: 32px;
-  height: 32px;
   display: flex;
+  padding: 4px 0px 8px 0px;
   justify-content: center;
   align-items: center;
-  padding: 0 10px;
   border-radius: 1px;
-  color: ${(props) =>
-    props.isOpen ? "#004477" : props.theme.colors.mainColor1};
-  margin: 4px 0px 1px 70px;
   cursor: pointer;
   svg {
     font-size: 18px;
@@ -148,6 +115,7 @@ const StyledFilterButton = styled.div`
     color: ${(props) => props.theme.colors.mainColor1};
   }
   span {
+    color: ${(props) => props.theme.colors.mainColor1};
     white-space: nowrap;
     position: relative;
   }
@@ -160,21 +128,20 @@ const StyledLayerList = styled.div`
 const SavedLayer = ({layers, groups}) => {
   const customLayers = localStorage.getItem("checkedLayers");
   const parsedLayers = JSON.parse(customLayers) || [];
-  const parsedAllLayers = layers.filter(l => parsedLayers.filter(p => p.id === l.id).length > 0)
-
   const { tagLayers, tags } = useSelector((state) => state.rpc);
-  
+  const layerArray = parsedLayers.map(layer => layer.id)
+
   if (parsedLayers.length > 0) {
     return (
       <>
-            {tagLayers.length > 0 ?
+            {(tagLayers.length > 0 || layerArray.length > 0) &&
                 <StyledLayerList>
                     {
                         tags.map((tag, index) => {
                             return (
                                 <TagLayerList
                                     tag={tag}
-                                    layers={parsedAllLayers}
+                                    layers={layers}
                                     index={index}
                                     groups={groups}
                                     key={'taglayerlist-' + tag + '-' + index}
@@ -182,24 +149,17 @@ const SavedLayer = ({layers, groups}) => {
                             );
                         })
                     }
+                    { layerArray.length > 0 &&
+                      <TagLayerList
+                      tag={strings.layerlist.customLayerInfo.customFilter}
+                        layers={layers}
+                        groups={groups}
+                        key={'taglayerlist-' + strings.layerlist.customLayerInfo.customFilter}
+                        customTag={layerArray}
+                      />
+                    }
                 </StyledLayerList>
-                :
-                parsedAllLayers &&
-                parsedAllLayers.map((layer) => (
-                    <StyledRowContainer key={layer.id}>
-                        <Layer layer={layer} />
-                    </StyledRowContainer>
-                ))
             }
-        <StyledButtonContainer>
-          <StyledSaveButton
-            onClick={() => {
-              store.dispatch(setIsCustomFilterOpen(true));
-            }}
-          >
-            {strings.layerlist.customLayerInfo.editLayers}
-          </StyledSaveButton>
-        </StyledButtonContainer>
       </>
     );
   }
@@ -210,7 +170,7 @@ const SavedLayer = ({layers, groups}) => {
 const LayerListTEMP = ({ groups, layers, tags }) => {
   useAppSelector((state) => state.language);
 
-  const { isSavedLayer, showSavedLayers } = useAppSelector((state) => state.ui);
+  const { showSavedLayers } = useAppSelector((state) => state.ui);
 
   const [isOpen, setIsOpen] = useState(false);
 

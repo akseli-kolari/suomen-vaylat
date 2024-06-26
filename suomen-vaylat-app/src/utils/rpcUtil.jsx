@@ -348,13 +348,16 @@ export const getActiveAnnouncements = (annoucements) => {
                     )
                 : [];
         const activeAnnouncements = annoucements.filter(
-            (announcement) =>
-                localStorageAnnouncements &&
+            (announcement) => {
+                const currDate = new Date();
+                const annDate = new Date(announcement.endDate);
+                return localStorageAnnouncements &&
                 !localStorageAnnouncements.includes(
                     announcement.id
-                )
+                ) &&
+                currDate < annDate;
+            }
         );
-
 
         const currentLang = strings.getLanguage();
         const defaultLang = strings.getAvailableLanguages()[0];

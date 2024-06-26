@@ -10,7 +10,7 @@ const StyledFilterButton = styled.div`
     justify-content: center;
     cursor: pointer;
     padding: 0px 6px 0px 6px;
-    background-color: ${props => props.isSelected ? props.theme.colors.mainColor2 : props.theme.colors.white};
+    background-color: ${props => props.isSelected ? props.theme.colors.mainColor2 : props.theme.colors.mainWhite};
     margin: 2px;
     border: 1px solid ${props => props.theme.colors.mainColor2};
     border-radius: 20px;
@@ -18,7 +18,9 @@ const StyledFilterButton = styled.div`
     transition: all 0.1s ease-out;
     &:hover{
         background-color: ${props => props.theme.colors.mainColor3};
+        color: ${props => props.theme.colors.mainWhite};
     };
+    color: ${props => props.isSelected && props.theme.colors.mainWhite};
 `;
 
 const StyledFilter = styled.span`
@@ -29,7 +31,6 @@ export const Filter = ({ filter, isOpen }) => {
     const { store } = useContext(ReactReduxContext);
     const {
         channel,
-        tagLayers,
         tags
     } = useSelector(state => state.rpc);
 

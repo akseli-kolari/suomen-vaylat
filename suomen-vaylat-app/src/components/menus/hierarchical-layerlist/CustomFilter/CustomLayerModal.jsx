@@ -1,5 +1,4 @@
 import { CustomLayerModalContent } from "./CustomLayerModalContent";
-import strings from "../../../../translations";
 import styled from "styled-components"; 
 
 const StyledModalWrapper = styled.div`
@@ -23,21 +22,15 @@ const StyledModalContent = styled.div`
   }
 `;
 
-const StyledModalTitle = styled.h2`
-  font-size: 24px;
-  color: #333333;
-`;
-
 const StyledModalBody = styled.div`
   margin-top: 5px;
-  color: #666666;
+  color:  ${(props) => props.theme.colors.black};
 `;
 
 export const CustomLayerModal = () => {
   return (
     <StyledModalWrapper>
       <StyledModalContent>
-        <StyledModalTitle>{strings.layerlist.customLayerInfo.modalTitle}</StyledModalTitle>
         <StyledModalBody>
           <CustomLayerModalContent />
         </StyledModalBody>

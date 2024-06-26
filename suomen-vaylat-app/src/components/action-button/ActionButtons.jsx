@@ -137,9 +137,10 @@ const StyledActionButtonIcon = styled.div`
     };
 `;
 
-const StyledActionButtonText = styled.p`
+const StyledActionButtonText = styled.div`
     width: 100%;
     margin: 0;
+    padding: 0.5em;
     font-size: 14px;
     font-weight: 600;
     user-select: none;

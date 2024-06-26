@@ -470,9 +470,10 @@
       "opacity": "Läpinäkyvyys"
     },
     "customLayerInfo": {
+      "customFilter": "Oma suodatin",
       "modalTitle": "Luo oma suodatin",
       "closeInfo": "Sulje ohje",
-      "infoContent": "Omalla suodattimella voidaan tallentaa valittuja tasoja selaimen välimuistiin. Tallennetut tasot ovat näkyvissä karttatasojen Kaikki tasot-välilehdessä sillä laitteella ja selaimessa, jossa karttatasot on tallennettu. Listasta voi säädellä valittujen tasojen näkyvyyttä kartalla. Kun olet valinnut halutut tasot, paina Tallenna-painiketta. Tallennuksen voi poistaa Tyhjennä kaikki-painikkeesta.",
+      "infoContent": "Omalla suodattimella voidaan tallentaa valittuja tasoja selaimen välimuistiin. Oman suodattimen muokkaaminen on laitekohtaista. Kun olet valinnut halutut tasot, paina 'Tallenna' -painiketta. 'Tyhjennä kaikki' -painike poistaa kaikki valitut tasot suodattimesta.",
       "saveLayers": "Tallenna",
       "removeLayers":"Tyhjennä kaikki",
       "editLayers": "Muokkaa",
