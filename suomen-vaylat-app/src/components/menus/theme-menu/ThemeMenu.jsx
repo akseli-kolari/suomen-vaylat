@@ -59,6 +59,18 @@ function ThemeMenu() {
         },
     };
 
+    const sortLayersAlphabetically = ( a, b ) => {
+        if ( a.name < b.name ){
+        return -1;
+        }
+        if ( a.name > b.name ){
+        return 1;
+        }
+        return 0;
+    }
+    let sortedLayers = [...allLayers];
+    sortedLayers.sort(sortLayersAlphabetically);
+
     return (
         <AnimatePresence>
             {!isSideMenuOpen && isThemeMenuOpen &&
@@ -76,8 +88,8 @@ function ThemeMenu() {
             >
                 <DialogHeader icon={faMap} title={strings.layerlist.layerlistLabels.themeLayers} handleClose={() => store.dispatch(setIsThemeMenuOpen(false))}/>
                 <ThemeLayerList
-                    allLayers={allLayers}
-                    allThemes={allThemesWithLayers}
+                    allLayers={sortedLayers}
+                    allThemes={[...allThemesWithLayers]}
                 />
             </StyledThemeMenuContainer>
             }
