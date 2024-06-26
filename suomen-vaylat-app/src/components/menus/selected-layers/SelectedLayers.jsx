@@ -8,7 +8,6 @@ import { useAppSelector } from "../../../state/hooks";
 import { sortableContainer, sortableElement } from 'react-sortable-hoc';
 import {arrayMoveImmutable} from 'array-move';
 import SelectedLayer from './SelectedLayer';
-import { filter } from "lodash";
 
 const StyledSelectedLayers = styled.div`
 
@@ -107,7 +106,7 @@ export const SelectedLayers = (props) => {
             resetThemeGroups(store);
             showNonThemeLayers(store, channel);
         }
-    }, [selectedLayers])
+    }, [selectedLayers, selectedTheme, store, channel])
 
     return (
         <StyledSelectedLayers>

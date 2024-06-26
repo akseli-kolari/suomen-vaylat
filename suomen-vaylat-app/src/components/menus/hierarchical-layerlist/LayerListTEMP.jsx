@@ -21,7 +21,6 @@ import {
   setCheckedLayer,
   setSelectedCustomFilterLayers,
 } from "../../../state/slices/uiSlice";
-import Layer from "./Layer";
 import { useSelector } from "react-redux";
 
 const listVariants = {

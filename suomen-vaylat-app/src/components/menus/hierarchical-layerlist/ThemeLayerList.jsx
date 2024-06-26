@@ -315,9 +315,9 @@ const getLinks = (text, startTag, endTag) => {
     {
         let i = text.indexOf(startTag, index);
 
-        if (i == -1) break;
+        if (i === -1) break;
 
-        if (index == -1) {
+        if (index === -1) {
             index = i;
         } else {
             let j = text.indexOf(endTag, index);
@@ -353,7 +353,7 @@ export const ThemeLayerList = ({
 
     useEffect(() => {
         if (currentZoomLevel < selectedTheme?.minZoomLevel) store.dispatch(setZoomTo(selectedTheme.minZoomLevel));
-    }, [selectedTheme]);
+    }, [selectedTheme, currentZoomLevel, store]);
 
     var linksArray = [];
 
@@ -442,8 +442,8 @@ export const Themes = ({
     };
 
     // Check if desc had url links so those can be displayed as links instead of group themes
-    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
-    const link = txt && getLinks(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
+    const txt = (theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc) || false;
+    const link = (txt && getLinks(txt.replace(/\s/g, ''), "<url>", "</url>")[0]) || [];
     
     return (
         <>
@@ -499,8 +499,8 @@ export const ThemeGroup = ({
     const isOpen = isSubtheme ? subthemeIsOpen : theme.id === selectedThemeId || (theme.hasOwnProperty("groups") && theme.groups.find(t => t.id === selectedThemeId));
     
     // check if group desc has img tags in order to display linked image instead of possible default
-    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
-    const images = txt && getLinks(txt.replace(/\s/g, ''), "<img>", "</img>") || [];
+    const txt = (theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc) || false;
+    const images = (txt && getLinks(txt.replace(/\s/g, ''), "<img>", "</img>")) || [];
 
     const themeNameFi = theme.locale["fi"].name.toLowerCase().replace(/\s/g, '');
 

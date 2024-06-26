@@ -97,7 +97,7 @@ export const FilterLayer = ({ layer, theme, groupName }) => {
   const { store } = useContext(ReactReduxContext);
   const [layerStyle, setLayerStyle] = useState(null);
   const [themeSelected, setThemeSelected] = useState(false);
-  const { isCustomFilterOpen, selectedCustomFilterLayers } = useAppSelector(
+  const { selectedCustomFilterLayers } = useAppSelector(
     (state) => state.ui
   );
 
@@ -161,11 +161,6 @@ export const FilterLayer = ({ layer, theme, groupName }) => {
         }
       }
     );
-  }
-
-  let downloadLink = null;
-  if (layer.config && layer.config.downloadLink) {
-    downloadLink = layer.config.downloadLink;
   }
 
   const isSelected =

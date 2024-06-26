@@ -66,7 +66,6 @@ const StyledButton = styled.div`
 
 const FeedbackForm = ({  groups, layers }) => {
   useAppSelector((state) => state.language);
-  const [selectedService, setSelectedService] = useState('');
   const [category, setCategory] = useState('');
   const [topic, setTopic] = useState('');
   const [specificTopic, setSpecificTopic] = useState('');
@@ -78,10 +77,6 @@ const FeedbackForm = ({  groups, layers }) => {
   const [email, setEmail] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  const handleServiceChange = (event) => {
-    setSelectedService(event.target.value);
-  };
 
   const handleCategoryChange = (event) => {
     setCategory(event.target.value);
