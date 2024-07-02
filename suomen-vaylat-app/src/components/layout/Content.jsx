@@ -199,7 +199,7 @@ const Content = () => {
   const search = useAppSelector((state) => state.search);
   const { store } = useContext(ReactReduxContext);
   const isShareOpen = shareUrl && shareUrl.length > 0 ? true : false;
-  let { downloadLink, isCustomFilterOpen, updateCustomLayer, isFeedbackFormOpen } = useAppSelector((state) => state.ui);
+  let { downloadLink, isCustomFilterOpen, isFeedbackFormOpen } = useAppSelector((state) => state.ui);
 
   const announcements = useAppSelector(
     (state) => state.rpc.activeAnnouncements
@@ -222,8 +222,6 @@ const Content = () => {
     // Save back to localStorage
     localStorage.setItem(name, existing.toString());
   };
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [currentAnnouncement, setCurrentAnnouncement] = useState(null);
 

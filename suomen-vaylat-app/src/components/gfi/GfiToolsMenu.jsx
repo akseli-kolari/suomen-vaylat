@@ -560,10 +560,6 @@ const GfiToolsMenu = ({ handleGfiToolsMenu, closeButton = true }) => {
         }
     };
 
-    const simplifyGeometry = () => {
-        console.log("simplify");
-    }
-
     useEffect(() => {
         let isSubscribed = true;
         channel && channel.handleEvent("DrawingEvent", async (data) => {
@@ -607,7 +603,7 @@ const GfiToolsMenu = ({ handleGfiToolsMenu, closeButton = true }) => {
             }
         })
         return () => {isSubscribed = false}
-    }, [channel])
+    }, [channel, handleGfiToolsMenu, isGfiOpen, selectedLayers, selectedLayersByType, store])
 
 
     const fetchFeaturesSynchronous = (feature, layer, data, numberedLoaderEnables) => {
@@ -689,7 +685,7 @@ const GfiToolsMenu = ({ handleGfiToolsMenu, closeButton = true }) => {
                 addFeaturesToMapParams
             ]);
         })
-    }, [gfiLocations]);
+    }, [gfiLocations, channel]);
 
     useEffect(() => {
         window.localStorage.getItem('geometries') !== null &&
@@ -702,7 +698,7 @@ const GfiToolsMenu = ({ handleGfiToolsMenu, closeButton = true }) => {
                     'FeatureEvent',
                     featureEventHandler
                 );
-            channel &&setIsGfiLoading(false);
+            channel && setIsGfiLoading(false);
         };
         
     }, [store, channel]);

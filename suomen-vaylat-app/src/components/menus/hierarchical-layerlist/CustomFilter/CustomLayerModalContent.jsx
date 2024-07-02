@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useAppSelector } from "../../../../state/hooks";
 import strings from "../../../../translations";
 import styled from "styled-components";
@@ -92,8 +92,6 @@ const StyledLayerGroupWrapper = styled.div``;
 // Checkbox logic and rendering is done in Layer.jsx
 
 export const CustomLayerList = ({ groups, layers, recurse = false }) => {
-  const [savedLayers, setSavedLayers] = useState([]);
-
   // const slicedGroups = groups ? groups.slice() : [];
   const slicedGroups = groups.slice();
 

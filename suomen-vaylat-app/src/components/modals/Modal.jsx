@@ -1,13 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { cloneElement } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence, useDragControls } from 'framer-motion';
-import { ReactReduxContext } from 'react-redux';
 import { faTimes, faWindowMaximize, faWindowMinimize, faWindowRestore, faQuestion } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
-import { setMinimizeGfi, setMaximizeGfi } from '../../state/slices/uiSlice';
-
 import { isMobile, theme } from '../../theme/theme';
 import ReactTooltip from 'react-tooltip';
 
@@ -196,7 +192,6 @@ const Modal = ({
     height = 'auto',
     width = 'auto'
 }) => {
-    const { store } = useContext(ReactReduxContext);
     const dragControls = useDragControls();
 
     const [localState, setLocalState] = useState(type === 'announcement');

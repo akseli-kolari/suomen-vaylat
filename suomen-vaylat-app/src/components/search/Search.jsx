@@ -423,7 +423,7 @@ const Search = () => {
                     }
                 }
             });
-    }, [channel]);
+    }, [channel, isSearchModalOpen]);
 
     const handleSearchSelect = (name, lon, lat, geom, osa, ajorata, etaisyys, osaLoppu, etaisyysLoppu, type) => {
         removeMarkersAndFeatures();
@@ -603,7 +603,7 @@ const Search = () => {
             })
         }
         else toast.dismiss('searchTipToast');
-    }, [geoJsonArray]);
+    }, [geoJsonArray, isSearchOpen, hasToastBeenShown, showToast]);
 
     useEffect(() => {
         //when carriagewaysearch ( ajordalla haku ) changes, reset searchValue

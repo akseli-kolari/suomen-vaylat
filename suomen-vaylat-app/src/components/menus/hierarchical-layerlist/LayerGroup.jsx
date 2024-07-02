@@ -292,48 +292,6 @@ const StyledSwitchButton = styled.div`
   background-color: ${(props) => props.theme.colors.mainWhite};
 `;
 
-const StyledCheckbox = styled.div`
-  position: absolute;
-  left: ${(props) => (props.isSelected ? "15px" : "0px")};
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-left: 2px;
-  margin-right: 2px;
-  transition: all 0.3s ease-out;
-  background-color: ${(props) => props.theme.colors.mainWhite};
-`;
-
-const StyledCheckboxContainer = styled.label`
-  position: relative;
-  color: #fff;
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
-  cursor: pointer;
-
-  input[type="checkbox"]:checked ~ span.checkbox-icon {
-    background-color: #008000;
-  }
-`;
-
-const Checkbox = ({ action, isChecked }) => {
-  return (
-    <StyledCheckboxContainer isChecked={isChecked}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(event) => {
-          action(event.target.checked);
-        }}
-      />
-      <StyledCheckbox isSelected={isChecked} />
-    </StyledCheckboxContainer>
-  );
-};
-
 const Switch = ({ action, isSelected }) => {
   return (
     <StyledSwitchContainer
@@ -409,7 +367,7 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
 
     };
     layersCounter(group);
-  }, [group, layers, selectedCustomFilterLayers]);
+  }, [group, layers, selectedCustomFilterLayers, isCustomFilterOpen]);
 
   useEffect(() => {
     totalVisibleGroupLayersCount === totalGroupLayersCount &&

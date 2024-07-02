@@ -237,7 +237,7 @@ const FeatureSearchResultPanel = ({
         } else {
             setShowWarn(false);
         }
-    }, [featureSearchResults]);
+    }, [featureSearchResults, openLayer, channel]);
 
     const handleSetOpenLayer = (layer) => {
         if (openLayer === layer.layerId) {
