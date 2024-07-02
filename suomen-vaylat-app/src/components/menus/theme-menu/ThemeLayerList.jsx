@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { faMap, faExternalLinkAlt, faLink, faAngleDown, faRoad, faShip, faTrain } from '@fortawesome/free-solid-svg-icons';
+import { faExternalLinkAlt, faLink, faAngleDown, faRoad, faShip, faTrain } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactReduxContext } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -516,9 +516,8 @@ export const ThemeGroup = ({
     const isOpen = isSubtheme ? subthemeIsOpen : theme.id === selectedThemeId || (theme.hasOwnProperty("groups") && theme.groups.find(t => t.id === selectedThemeId));
     
     // check if group desc has img tags in order to display linked image instead of possible default
-    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
-    const images = txt && getDescTagContent(txt.replace(/\s/g, ''), "<img>", "</img>") || [];
-
+    const txt = (theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc) || false;
+    const images = (txt && getDescTagContent(txt.replace(/\s/g, ''), "<img>", "</img>")) || [];
     const themeNameFi = theme.locale["fi"].name.toLowerCase().replace(/\s/g, '');
 
     let groups = [];
