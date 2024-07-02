@@ -376,7 +376,7 @@ export const ThemeLayerList = ({
         <>
             { allThemes.map((themeGroup, themeGroupIndex) => {
                 return (
-                    <>
+                    <div key={themeGroupIndex}>
                         <StyledThemeGroup
                             onClick={() => isOpen === themeGroupIndex ? setIsOpen(null) : setIsOpen(themeGroupIndex)}
                         >
@@ -420,7 +420,7 @@ export const ThemeLayerList = ({
                                     allLayers={allLayers}
                                 />
                         </StyledLayerGroupContainer>
-                    </>
+                    </div>
                 )
                 })
             }
@@ -448,14 +448,14 @@ export const ThemeLayerList = ({
     let links = [];
     let themes = [];
     groups.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name)).forEach((group, index) => {
-            // Check if desc had url links so those can be displayed as links instead of group themes
-            const txt = group.locale[lang].desc && group.locale[lang].desc.length > 0 && group.locale[lang].desc;
-            const link = getDescTagContent(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
-            if (link.length > 0) {
+        // Check if desc had url links so those can be displayed as links instead of group themes
+	    const txt = (group.locale[lang].desc && group.locale[lang].desc.length > 0 && group.locale[lang].desc) || false;
+        const link = (txt && getDescTagContent(txt.replace(/\s/g, ''), "<url>", "</url>")[0]) || [];
+        if (link.length > 0) {
                 links.push({group, link, index});
-            } else {
-                themes.push({group, index});
-            }
+        } else {
+            themes.push({group, index});
+        }
     })
 
     return (
@@ -474,8 +474,8 @@ export const ThemeLayerList = ({
                 isFirstSubtheme={true}
                 />
             })}
-            { links.length > 0 && links.map(link => {
-                return <ThemeLinkList isFirstSubtheme={true} index={link.index} link={link.link} theme={link.group} lang={lang}/>
+            { links.length > 0 && links.map((link, index) => {
+                return <ThemeLinkList key={index} isFirstSubtheme={true} index={link.index} link={link.link} theme={link.group} lang={lang}/>
             })}
         </StyledSubthemes>
     )
@@ -615,9 +615,9 @@ export const ThemeGroup = ({
                 <div>
                     { images.length > 0 ?
                         (
-                            images.map((img) => {
+                            images.map((img, index) => {
                                 return(
-                                    <StyledLayerGroupImage src={img} alt=''/>
+                                    <StyledLayerGroupImage src={img} key={index} alt=''/>
                                 )
                             })
                         )
@@ -742,10 +742,10 @@ export const ThemeDesc = ({
     }
 
     // Get content from desc (surrounded by HTMl tags)
-    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
 
-    const links = getDescTagContent(txt.replace(/\s/g, ''),"<a>", "</a>")
-    const desc = getDescTagContent(txt, "<p>", "</p>")
+    const txt = (theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc) || false;
+    const links = (txt && getDescTagContent(txt.replace(/\s/g, ''),"<a>", "</a>")) || []
+    const desc = (txt && getDescTagContent(txt, "<p>", "</p>")) || []
     
     const { store } = useContext(ReactReduxContext);
 
