@@ -358,7 +358,7 @@ export const TagLayerList = ({
           type: 'tween'
         }}
       >
-        <Layers layers={filteredLayers} isOpen={isOpen} groups={groups} />
+        <Layers layers={filteredLayers} groups={groups} />
 
         { customTag.length > 0 &&
             <StyledButtonContainer>

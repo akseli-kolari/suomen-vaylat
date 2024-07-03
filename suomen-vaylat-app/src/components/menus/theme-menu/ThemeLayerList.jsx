@@ -376,7 +376,7 @@ export const ThemeLayerList = ({
         <>
             { allThemes.map((themeGroup, themeGroupIndex) => {
                 return (
-                    <div key={themeGroupIndex}>
+                    <>
                         <StyledThemeGroup
                             onClick={() => isOpen === themeGroupIndex ? setIsOpen(null) : setIsOpen(themeGroupIndex)}
                         >
@@ -420,7 +420,7 @@ export const ThemeLayerList = ({
                                     allLayers={allLayers}
                                 />
                         </StyledLayerGroupContainer>
-                    </div>
+                    </>
                 )
                 })
             }
@@ -605,7 +605,7 @@ export const ThemeGroup = ({
             <StyledLayerGroupContainer
                 key={'slg_' + index}
                 initial='hidden'
-                animate={isThemeOpen ? 'visible' : 'hidden'}
+                animate={isThemeOpen || isOpen ? 'visible' : 'hidden'}
                 variants={listVariants}
                 transition={{
                     duration: 0.3,

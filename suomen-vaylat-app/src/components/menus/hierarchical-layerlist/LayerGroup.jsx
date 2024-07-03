@@ -686,10 +686,10 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
                 layers={layers}
                 recurse={true}
               />
-              <Layers layers={filteredLayers} isOpen={isOpen} />
+              <Layers layers={filteredLayers}/>
             </>
           )}
-          {!hasChildren && <Layers layers={filteredLayers} isOpen={isOpen} />}
+          {!hasChildren && <Layers layers={filteredLayers}/>}
         </StyledLayerGroup>
       </StyledLayerGroups>
     </>
