@@ -504,7 +504,7 @@ export const GFIPopup = ({ handleGfiDownload }) => {
 
   useEffect(() => {
     isGfiDownloadsOpen && setIsGfiDownloadsOpen(false);
-  }, [gfiLocations, isGfiDownloadsOpen]);
+  }, [gfiLocations]);
 
   // Zoom to features
   const handleOverlayGeometry = (geoJson) => {

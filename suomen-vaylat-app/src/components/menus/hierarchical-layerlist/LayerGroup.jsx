@@ -367,7 +367,7 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
 
     };
     layersCounter(group);
-  }, [group, layers, selectedCustomFilterLayers, isCustomFilterOpen]);
+  }, [group, layers, selectedCustomFilterLayers]);
 
   useEffect(() => {
     totalVisibleGroupLayersCount === totalGroupLayersCount &&

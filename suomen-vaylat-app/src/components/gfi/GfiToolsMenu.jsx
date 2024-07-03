@@ -603,7 +603,7 @@ const GfiToolsMenu = ({ handleGfiToolsMenu, closeButton = true }) => {
             }
         })
         return () => {isSubscribed = false}
-    }, [channel, handleGfiToolsMenu, isGfiOpen, selectedLayers, selectedLayersByType, store])
+    }, [channel])
 
 
     const fetchFeaturesSynchronous = (feature, layer, data, numberedLoaderEnables) => {
@@ -685,7 +685,7 @@ const GfiToolsMenu = ({ handleGfiToolsMenu, closeButton = true }) => {
                 addFeaturesToMapParams
             ]);
         })
-    }, [gfiLocations, channel]);
+    }, [gfiLocations]);
 
     useEffect(() => {
         window.localStorage.getItem('geometries') !== null &&

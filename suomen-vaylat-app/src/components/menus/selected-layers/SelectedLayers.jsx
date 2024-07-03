@@ -106,7 +106,7 @@ export const SelectedLayers = (props) => {
             resetThemeGroups(store);
             showNonThemeLayers(store, channel);
         }
-    }, [selectedLayers, selectedTheme, store, channel])
+    }, [selectedLayers])
 
     return (
         <StyledSelectedLayers>
