@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { ReactReduxContext, useSelector } from 'react-redux';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import Badge from 'react-bootstrap/Badge';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { theme, isMobile } from '../../../theme/theme';
 import ReactTooltip from "react-tooltip";
@@ -41,7 +42,6 @@ const StyledlayerHeader = styled.div`
   margin-right: 0.5em;
   display: flex;
   width: 100%;
-  justify-content: space-between;
   align-items: center;
 `;
 
@@ -251,7 +251,7 @@ export const Layer = ({ layer, themeName, groupName, showSwitch = true }) => {
                     <StyledLayerName
                         themeStyle={themeStyle}
                     >
-                        {layer.name} {groupName && groupName !== 'Unknown' && !excludeGroups.includes(groupName) && ` (${groupName})`}
+                        {layer.name} {groupName && groupName !== 'Unknown' && !excludeGroups.includes(groupName) && ` (${groupName})`}{layer.newLayer && <Badge style={{color: "white", marginLeft: ".5em"}} pill bg="primary">{strings.tooltips.layerlist.newLayer}</Badge>}
                     </StyledLayerName>
                 </StyledlayerHeader>
                 {layer.metadataIdentifier && <LayerMetadataButton layer={layer}/>}

@@ -11,6 +11,7 @@
   "tooltips": {
     "showInfoLink": "Filtreringsinformation (öppnas på en ny flik)",
     "layerlist": {
+      "newLayer": "Ny",
       "filter": "Filtrera",
       "filterable": "Filtrerbart kartlager",
       "opacity": "Opacitet"
@@ -405,6 +406,7 @@
     "carriageWaySearch": "Använda körbanasökning"
   },
   "layerlist": {
+    "errorLoadingLayers": "Det gick inte att ladda kartnivåer",
     "layerlistLabels": {
       "allLayers": "Alla lager",
       "themeLayers": "Teman",

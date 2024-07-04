@@ -9,13 +9,12 @@ import {
     setMapLayers,
     setAllSelectedThemeLayers
 } from '../state/slices/rpcSlice';
-
+import { Slide, toast } from "react-toastify";
 import {
     setSelectedMapLayersMenuThemeIndex,
     setIsLegendOpen,
     setIsZoomBarOpen
 } from '../state/slices/uiSlice';
-
 import { isMobile } from '../theme/theme';
 import strings from '../translations';
 import { ANNOUNCEMENTS_LOCALSTORAGE } from '../utils/constants';
@@ -27,8 +26,20 @@ import { ANNOUNCEMENTS_LOCALSTORAGE } from '../utils/constants';
  * @param {Object} channel
  */
 export const updateLayers = (store, channel) => {
-    channel && channel.getAllLayers(function (data) {
+    channel.getAllLayersSV(function (data) {
         store.dispatch(setAllLayers(data));
+    }, function err(data) {
+        toast.error(strings.layerlist.errorLoadingLayers, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            transition: Slide
+        });
     });
     channel && channel.getSelectedLayers(function (data) {
         const reArrangedSelectedLayers = reArrangeSelectedLayersOrder(data, store)

@@ -11,6 +11,7 @@
   "tooltips": {
     "showInfoLink": "Suodatus info (avautuu uuteen välilehteen)",
     "layerlist": {
+      "newLayer": "Uusi",
       "filter": "Suodata",
       "filterable": "Suodatettava taso",
       "opacity": "Opasiteetti"
@@ -442,6 +443,7 @@
     "carriageWaySearch": "Käytä ajorataa haussa"
   },
   "layerlist": {
+    "errorLoadingLayers": "Virhe tasojen latauksessa",
     "layerlistLabels": {
       "allLayers": "Kaikki tasot",
       "themeLayers": "Teemakartat",

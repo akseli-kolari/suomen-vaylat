@@ -11,6 +11,7 @@
   "tooltips": {
     "showInfoLink": "Filtering info (opens in a new tab)",
     "layerlist": {
+      "newLayer": "New",
       "filter": "Filter",
       "filterable": "Filterable layer",
       "opacity": "Opacity"
@@ -406,6 +407,7 @@
     "carriageWaySearch": "Use driving_lane search"
   },
   "layerlist": {
+    "errorLoadingLayers": "Error loading maplayers",
     "layerlistLabels": {
       "allLayers": "All layers",
       "themeLayers": "Themes",

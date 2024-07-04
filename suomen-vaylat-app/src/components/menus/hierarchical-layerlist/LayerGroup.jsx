@@ -166,7 +166,7 @@ const StyledMasterGroupLayersCount = styled.p`
   padding: 0px;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  color: ${(props) => props.theme.colors.mainWhite};
 `;
 
 const StyledSubGroupLayersCount = styled.p`
