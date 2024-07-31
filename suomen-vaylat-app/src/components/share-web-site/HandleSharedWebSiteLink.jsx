@@ -125,6 +125,6 @@ export const HandleSharedWebSiteLink = () => {
     });
 
     // last update layers to redux
-    updateLayers(store, channel);
+    channel && updateLayers(store, channel);
     return (<></>);
 };

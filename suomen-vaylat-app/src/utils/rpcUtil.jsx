@@ -26,7 +26,7 @@ import { ANNOUNCEMENTS_LOCALSTORAGE } from '../utils/constants';
  * @param {Object} channel
  */
 export const updateLayers = (store, channel) => {
-    channel.getAllLayersSV(function (data) {
+    channel && channel.getAllLayersSV(function (data) {
         store.dispatch(setAllLayers(data));
     }, function err(data) {
         toast.error(strings.layerlist.errorLoadingLayers, {
