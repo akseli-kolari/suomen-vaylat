@@ -3,7 +3,7 @@ import strings from '../../translations';
 import { ReactReduxContext } from 'react-redux';
 import { setActiveSwitch } from '../../state/slices/uiSlice';
 import { useAppSelector } from '../../state/hooks';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Switch from '../switch/Switch';
 import {
@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import SearchResultPanel from './SearchResultPanel';
 import { resetFeatureSearchResults } from '../../state/slices/rpcSlice';
+import { createEmitAndSemanticDiagnosticsBuilderProgram } from 'typescript';
 
 
 const StyledSearchModal = styled.div`
@@ -42,6 +43,13 @@ const StyledInput = styled.input`
     border-color: #A0A0A0;
     margin-top: 3px;
     margin-bottom: 3px;
+    &:focus {
+    border-color: #007bff;
+    outline: none;
+    }
+    &.error {
+    border-color: red;
+    }
     
 `;
 const StyledInputHalf = styled.input`
@@ -55,6 +63,14 @@ const StyledInputHalf = styled.input`
     :last-of-type {
         margin-left: 2%;
     }
+    &:focus {
+    border-color: #007bff;
+    outline: none;
+    }
+    &.error {
+    border-color: red;
+    }
+
 `;
 
 const StyledSearchSection = styled.div`
@@ -217,6 +233,39 @@ const parseSearchValueFromParts = (partsArray, blancSpacePosition) => {
     return newSearchValue.endsWith('/') ? newSearchValue.slice(0, -1) : newSearchValue;;
 }
 
+const getTrackSearchValuePart = (position, trackSearchArray, searchValue, setTrackSearchArray) => {
+    //if searchValue setted to searchbar, split values to input fields
+    if (searchValue!== "" ){
+        let searchArray = searchValue.split("/");   
+        if (searchArray){
+            return searchArray[position];
+        }
+    }
+    return trackSearchArray[position];
+}
+
+const updateTrackSearchValue = (searchValue, position, setTrackSearchArray, trackErrors, setTrackErrors ) => {
+    const newErrors = [...(trackErrors ?? [])];
+    newErrors[position] = searchValue === '';
+    setTrackErrors(newErrors);
+    setTrackSearchArray(prevArray => {
+        const newArray = prevArray ? [...prevArray] : [];
+        newArray[position] = searchValue;
+        return newArray;
+    });
+}
+
+const parseTrackSearchQuery = (trackSearchArray) => {
+    return trackSearchArray.join("/")
+}
+
+const validateTrackSearch = (trackSearchArray, setTrackErrors) => {
+    const newErrors = trackSearchArray.map(value => value === '' || value === undefined);
+    setTrackErrors(newErrors);
+    return newErrors.every((error) => error === false)
+}
+
+
 const SearchModal = ({
     searchValue,
     setSearchValue,
@@ -244,6 +293,8 @@ const SearchModal = ({
 }) => {
     const { store } = useContext(ReactReduxContext);
     const { activeSwitch } = useAppSelector((state) => state.ui);
+    const [trackSearchArray, setTrackSearchArray] = useState([]);
+    const [trackErrors, setTrackErrors] = useState([false, false, false]);
 
     const updateActiveSwitch = (type) => {
         // if no specific search is selected, default to address
@@ -458,35 +509,47 @@ const SearchModal = ({
                         <StyledInput
                             type="text"
                             placeholder={strings.search.track.tracknumber  }
-                            value={getSearchValuePart(searchValue, searchType, 0, true)}
-                            onChange={(e) => updateRoadSearchValue(searchValue, searchType, setSearchValue, 0, e.target.value) }
+                            value={  getTrackSearchValuePart(0, trackSearchArray, searchValue, setTrackSearchArray)}
+                            onChange={(e) => updateTrackSearchValue(e.target.value,0, setTrackSearchArray, trackErrors, setTrackErrors)}
                             onKeyPress={e => {
                                 if (e.key === 'Enter') {
-                                    handleSeach(searchValue);
+                                    if (validateTrackSearch(trackSearchArray, setTrackErrors)){
+                                        handleSeach(parseTrackSearchQuery(trackSearchArray));
+                                    }
                                 }
+                                
                             }}
+                            className={trackErrors[0] ? 'error' : ''}
                         />
                         <StyledInputHalf
                             type="text"
                             placeholder={ strings.search.track.trackkm}
-                            value={getSearchValuePart(searchValue, searchType, 1, true)}
-                            onChange={(e) => updateRoadSearchValue(searchValue, searchType, setSearchValue, 1, e.target.value) }
+                            value={ getTrackSearchValuePart(1, trackSearchArray, searchValue, setTrackSearchArray)}
+                            onChange={(e) => updateTrackSearchValue(e.target.value,1, setTrackSearchArray, trackErrors, setTrackErrors) }
                             onKeyPress={e => {
                                 if (e.key === 'Enter') {
-                                    handleSeach(searchValue);
+                                    if (validateTrackSearch(trackSearchArray, setTrackErrors, trackErrors, setTrackErrors)){
+                                        handleSeach(parseTrackSearchQuery(trackSearchArray));
+                                    }
                                 }
+                                
                             }}
+                            className={trackErrors[1] ? 'error' : ''}
                         />
                         <StyledInputHalf
                             type="text"
                             placeholder={ strings.search.track.trackm}
-                            value={getSearchValuePart(searchValue, searchType, 2, true)}
-                            onChange={(e) => updateRoadSearchValue(searchValue, searchType, setSearchValue, 2, e.target.value) }
+                            value={ getTrackSearchValuePart(2, trackSearchArray, searchValue, setTrackSearchArray)}
+                            onChange={(e) => updateTrackSearchValue(e.target.value,2, setTrackSearchArray, trackErrors, setTrackErrors)}
                             onKeyPress={e => {
                                 if (e.key === 'Enter') {
-                                    handleSeach(searchValue);
+                                    if (validateTrackSearch(trackSearchArray, setTrackErrors)){
+                                        handleSeach(parseTrackSearchQuery(trackSearchArray));
+                                    }
                                 }
+                                
                             }}
+                            className={trackErrors[2] ? 'error' : ''}
                         />
                     </>
                     <SearchResultPanel 
