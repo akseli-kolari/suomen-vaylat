@@ -351,7 +351,8 @@
     "track" : {
       "tracknumber" : "Track number",
       "trackkm" : "Track kilometre",
-      "trackm" : "Track metre"
+      "trackm" : "Track metre",
+      "trackMandatoryMessage": "Tracknumber, Trackkm and Trackm fields are all mandatory in track search."
     },
     "tips": {
       "title": "Use location search to search for a municipality, address, property identifier, road address or track address.",
@@ -373,9 +374,10 @@
         "start:5/116/0/50 end:5/348/0/100",
         "The 'Use driving_lane search' option changes the search to use either the lane or distance when searching with three parameters"
       ],
-      "vkmTrack": "Track search, type in the format 'track number/track kilometre/track metre'.",
+      "vkmTrack": "Track search, type in the format 'track number/track kilometre/track metre'. All 3 parameters are mandatory.",
       "vkmTrackExamples": [
-        "001/2/10"
+        "001/2/10",
+        "OL 122/750/30"
       ],
       "realEstateUnitIdentifier": "Property identifier search, type in the format 'aa-bb-cc-d' or 'aaa-bbb-cc-ddd'.",
       "realEstateUnitIdentifierExamples": [

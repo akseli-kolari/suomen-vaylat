@@ -11,7 +11,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import SearchResultPanel from './SearchResultPanel';
 import { resetFeatureSearchResults } from '../../state/slices/rpcSlice';
-import { createEmitAndSemanticDiagnosticsBuilderProgram } from 'typescript';
 
 
 const StyledSearchModal = styled.div`
@@ -110,6 +109,9 @@ const CheckboxLabel = styled.label`
     font-size: 16px;
     margin-top: 5px;
     color: grey;
+`
+const StyledValidationMessage = styled.div`
+    color: red;
 `
 
 const getSearchValuePart = (searchValue, searchType, part, carriageWaySearch) => {
@@ -230,39 +232,53 @@ const parseSearchValueFromParts = (partsArray, blancSpacePosition) => {
     }else {
         newSearchValue = partsArray.join('/');
     }
-    return newSearchValue.endsWith('/') ? newSearchValue.slice(0, -1) : newSearchValue;;
+    return newSearchValue.endsWith('/') ? newSearchValue.slice(0, -1) : newSearchValue;
 }
 
-const getTrackSearchValuePart = (position, trackSearchArray, searchValue, setTrackSearchArray) => {
-    //if searchValue setted to searchbar, split values to input fields
-    if (searchValue!== "" ){
-        let searchArray = searchValue.split("/");   
-        if (searchArray){
-            return searchArray[position];
-        }
-    }
-    return trackSearchArray[position];
+const getTrackSearchValuePart = (position, searchValue) => {
+    if (!searchValue) return '';
+    const searchArray = searchValue.split("/");
+    return searchArray[position] || '';
 }
 
-const updateTrackSearchValue = (searchValue, position, setTrackSearchArray, trackErrors, setTrackErrors ) => {
+const updateTrackSearchValue = (newValue, position, searchValue, setSearchValue, trackErrors, setTrackErrors ) => {
+    // Update errors
     const newErrors = [...(trackErrors ?? [])];
-    newErrors[position] = searchValue === '';
+    newErrors[position] = newValue === '';
     setTrackErrors(newErrors);
-    setTrackSearchArray(prevArray => {
-        const newArray = prevArray ? [...prevArray] : [];
-        newArray[position] = searchValue;
-        return newArray;
-    });
+    // Modify the search value
+    let searchArray = searchValue ? searchValue.split("/") : ['','',''];
+    searchArray[position] = newValue;
+    // Join the parts back into a single string
+    const newSearchValue = searchArray.join("/");
+    setSearchValue(newSearchValue.endsWith('/') ? newSearchValue.slice(0, -1) : newSearchValue);
 }
 
-const parseTrackSearchQuery = (trackSearchArray) => {
-    return trackSearchArray.join("/")
+const parseTrackSearchQuery = (searchQuery) => {
+    return searchQuery.endsWith('/') ? searchQuery.slice(0, -1) : searchQuery;
 }
 
-const validateTrackSearch = (trackSearchArray, setTrackErrors) => {
-    const newErrors = trackSearchArray.map(value => value === '' || value === undefined);
+const validateTrackSearch = (searchValue, setTrackErrors) => {
+    let searchArray = searchValue.split("/");
+    const newErrors = Array(3).fill(false);
+    // If there are not exactly 3 values, populate the errors array accordingly
+    if (searchArray.length !== 3) {
+        for (let i = 0; i < 3; i++) {
+            if (!searchArray[i]) {
+                newErrors[i] = true;
+            }
+        }
+    } else {
+        // Check for any empty values
+        searchArray.forEach((value, index) => {
+            if (value === '') {
+                newErrors[index] = true;
+            }
+        });
+    }
     setTrackErrors(newErrors);
     return newErrors.every((error) => error === false)
+
 }
 
 
@@ -293,7 +309,6 @@ const SearchModal = ({
 }) => {
     const { store } = useContext(ReactReduxContext);
     const { activeSwitch } = useAppSelector((state) => state.ui);
-    const [trackSearchArray, setTrackSearchArray] = useState([]);
     const [trackErrors, setTrackErrors] = useState([false, false, false]);
 
     const updateActiveSwitch = (type) => {
@@ -318,8 +333,12 @@ const SearchModal = ({
     };
  
     useEffect(() => {
-       setSearchValue(searchValue)
-    }, [searchValue, setSearchValue]);  
+        //track validation every time searchValue changes
+        if (activeSwitch === 'track' ){
+            validateTrackSearch(searchValue, setTrackErrors)
+        }
+        setSearchValue(searchValue)
+    }, [activeSwitch, searchValue, setSearchValue]);  
 
     return isOpen ? (
         <StyledSearchModal>   
@@ -509,12 +528,12 @@ const SearchModal = ({
                         <StyledInput
                             type="text"
                             placeholder={strings.search.track.tracknumber  }
-                            value={  getTrackSearchValuePart(0, trackSearchArray, searchValue, setTrackSearchArray)}
-                            onChange={(e) => updateTrackSearchValue(e.target.value,0, setTrackSearchArray, trackErrors, setTrackErrors)}
+                            value={  getTrackSearchValuePart(0, searchValue)}
+                            onChange={(e) => updateTrackSearchValue(e.target.value, 0, searchValue, setSearchValue, trackErrors, setTrackErrors)}
                             onKeyPress={e => {
                                 if (e.key === 'Enter') {
-                                    if (validateTrackSearch(trackSearchArray, setTrackErrors)){
-                                        handleSeach(parseTrackSearchQuery(trackSearchArray));
+                                    if (validateTrackSearch(searchValue, setTrackErrors)){
+                                        handleSeach(parseTrackSearchQuery(searchValue));
                                     }
                                 }
                                 
@@ -524,12 +543,12 @@ const SearchModal = ({
                         <StyledInputHalf
                             type="text"
                             placeholder={ strings.search.track.trackkm}
-                            value={ getTrackSearchValuePart(1, trackSearchArray, searchValue, setTrackSearchArray)}
-                            onChange={(e) => updateTrackSearchValue(e.target.value,1, setTrackSearchArray, trackErrors, setTrackErrors) }
+                            value={ getTrackSearchValuePart(1, searchValue, searchValue)}
+                            onChange={(e) => updateTrackSearchValue(e.target.value,1, searchValue, setSearchValue, trackErrors, setTrackErrors) }
                             onKeyPress={e => {
                                 if (e.key === 'Enter') {
-                                    if (validateTrackSearch(trackSearchArray, setTrackErrors, trackErrors, setTrackErrors)){
-                                        handleSeach(parseTrackSearchQuery(trackSearchArray));
+                                    if (validateTrackSearch(searchValue, setTrackErrors)){
+                                        handleSeach(parseTrackSearchQuery(searchValue));
                                     }
                                 }
                                 
@@ -539,18 +558,19 @@ const SearchModal = ({
                         <StyledInputHalf
                             type="text"
                             placeholder={ strings.search.track.trackm}
-                            value={ getTrackSearchValuePart(2, trackSearchArray, searchValue, setTrackSearchArray)}
-                            onChange={(e) => updateTrackSearchValue(e.target.value,2, setTrackSearchArray, trackErrors, setTrackErrors)}
+                            value={ getTrackSearchValuePart(2, searchValue)}
+                            onChange={(e) => updateTrackSearchValue(e.target.value,2, searchValue, setSearchValue, trackErrors, setTrackErrors)}
                             onKeyPress={e => {
                                 if (e.key === 'Enter') {
-                                    if (validateTrackSearch(trackSearchArray, setTrackErrors)){
-                                        handleSeach(parseTrackSearchQuery(trackSearchArray));
+                                    if (validateTrackSearch(searchValue, setTrackErrors)){
+                                        handleSeach(parseTrackSearchQuery(searchValue));
                                     }
                                 }
                                 
                             }}
                             className={trackErrors[2] ? 'error' : ''}
                         />
+                        { trackErrors.some((error) => error === true) && (<StyledValidationMessage>{strings.search.track.trackMandatoryMessage}</StyledValidationMessage>) }
                     </>
                     <SearchResultPanel 
                         isSearchOpen={isSearchOpen}
