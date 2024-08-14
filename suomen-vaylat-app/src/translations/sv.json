@@ -350,7 +350,8 @@
     "track" : {
       "tracknumber" : "Bannummer",
       "trackkm" : "Spårkilometer",
-      "trackm" : "Banmeter"
+      "trackm" : "Banmeter",
+      "trackMandatoryMessage": "Bannummer, Spårkilometer och Banmeter parametrarna är obligatoriska vid bansökning."
     },  
     "tips": {
       "title": "Med platssökning kan du söka en kommun, adress, fastighetsbeteckning, vägadress eller banadress.",
@@ -372,9 +373,10 @@
         "start:5/116/0/50 slut:5/348/0/100",
         "Alternativet 'Använd körfilen i sökningen' ändrar sökningen så att den använder antingen filen eller avståndet som den tredje parametern när du söker med tre parametrar."
       ],
-      "vkmTrack": "Bansökning, skriv i formatet 'bannummer/bankilometer/banmeter'.",
+      "vkmTrack": "Bansökning, skriv i formatet 'bannummer/bankilometer/banmeter'. Alla tre parametrarna är obligatoriska.",
       "vkmTrackExamples": [
-        "001/2/10"
+        "001/2/10",
+        "OL 122/750/30"
       ],
       "realEstateUnitIdentifier": "Fastighetsbeteckning, skriv i formatet 'aa-bb-cc-d' eller 'aaa-bbb-cc-ddd'.",
       "realEstateUnitIdentifierExamples": [

@@ -387,7 +387,8 @@
     "track" : {
       "tracknumber" : "Ratanumero",
       "trackkm" : "Ratakilometri",
-      "trackm" : "Ratametri"
+      "trackm" : "Ratametri",
+      "trackMandatoryMessage": "Ratanumero, ratakilometri ja ratametri kentät ovat pakollisia ratahaussa."
     },
     "tips": {
       "title": "Paikkahaulla voit hakea kuntaa, osoitetta, kiinteistötunnusta, tieosoitetta tai rataosoitetta.",
@@ -408,9 +409,10 @@
         "alku:5/116/0/50 loppu:5/348/0/100",
         "'Käytä ajorataa haussa' -valinta vaihtaa kolmella parametrilla haettaessa haun käyttämään joko ajorataa tai etäisyyttä kolmantena parametrina"
       ],
-      "vkmTrack": "Ratahaku, kirjoita muodossa 'ratanumero/ratakilometri/ratametri'.",
+      "vkmTrack": "Ratahaku, kirjoita muodossa 'ratanumero/ratakilometri/ratametri'. Kaikki 3 parametria on pakollisia.",
       "vkmTrackExamples": [
-        "001/2/10"
+        "001/2/10",
+        "OL 122/750/30"
       ],
       "realEstateUnitIdentifier": "Kiinteistötunnushaku, kirjoita muodossa 'aa-bb-cc-d' tai 'aaa-bbb-cc-ddd'.",
       "realEstateUnitIdentifierExamples": [
