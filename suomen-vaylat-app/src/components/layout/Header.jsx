@@ -229,7 +229,7 @@ export const Header = () => {
                     <span>{strings.tooltips.showUserGuide}</span>
                 </ReactTooltip>
                 <StyledHeaderTitleContainer onClick={() => setToMainScreen()}>
-                    {strings.title}
+                    {strings.title} {process.env.REACT_APP_EXTRANET === "true" &&  strings.extranet}
                 </StyledHeaderTitleContainer>
                 <StyledHeaderLogoContainer>
                     <a

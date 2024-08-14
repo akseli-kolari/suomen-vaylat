@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { ReactReduxContext, useSelector } from "react-redux";
 import styled from "styled-components";
 import {
@@ -97,7 +97,7 @@ export const FilterLayer = ({ layer, theme, groupName }) => {
   const { store } = useContext(ReactReduxContext);
   const [layerStyle, setLayerStyle] = useState(null);
   const [themeSelected, setThemeSelected] = useState(false);
-  const { isCustomFilterOpen, selectedCustomFilterLayers } = useAppSelector(
+  const { selectedCustomFilterLayers } = useAppSelector(
     (state) => state.ui
   );
 
@@ -137,16 +137,6 @@ export const FilterLayer = ({ layer, theme, groupName }) => {
     }, 1000);
   };
 
-  useEffect(() => {
-    const checkedLayers = localStorage.getItem('checkedLayers');
-    checkedLayers && store.dispatch(
-        setSelectedCustomFilterLayers(JSON.parse(checkedLayers))
-      );
-    // Clear the timeout when the component unmounts
-    return () => clearTimeout(window.legendUpdateTimer);
-
-  }, []);
-
   const themeStyle = theme || null;
 
   if (selectedTheme && selectedTheme.name && themeSelected === false) {
@@ -171,11 +161,6 @@ export const FilterLayer = ({ layer, theme, groupName }) => {
         }
       }
     );
-  }
-
-  let downloadLink = null;
-  if (layer.config && layer.config.downloadLink) {
-    downloadLink = layer.config.downloadLink;
   }
 
   const isSelected =

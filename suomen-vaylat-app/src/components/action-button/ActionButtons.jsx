@@ -41,6 +41,7 @@ const StyledContent = styled.div`
 
 const StyledActionButton = styled(motion.div)`
     max-width: 312px;
+    padding: .5em;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -136,12 +137,14 @@ const StyledActionButtonIcon = styled.div`
     };
 `;
 
-const StyledActionButtonText = styled.p`
+const StyledActionButtonText = styled.div`
     width: 100%;
     margin: 0;
+    padding: 0.5em;
     font-size: 14px;
     font-weight: 600;
     user-select: none;
+    text-align: center;
     @media ${props => props.theme.device.mobileL} {
         font-size: 12px;
     };

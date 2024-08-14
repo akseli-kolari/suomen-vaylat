@@ -315,7 +315,7 @@ export const FilterModal = ({filterInfo}) => {
         console.log(err);
       }
     );
-  }, []);
+  }, [channel, filterInfo]);
 
   useEffect(() => {
     var layer = filterInfo?.layer;

@@ -693,7 +693,7 @@ export const GFIPopup = ({ handleGfiDownload }) => {
       });
 
     // Set filtered results to map
-    selectedTab == index && addGFIResultsToMap(filteredFeatures)
+    selectedTab === index && addGFIResultsToMap(filteredFeatures)
 
     const tablePropsInit = {
       columns: columnsArray,
@@ -862,7 +862,7 @@ export const GFIPopup = ({ handleGfiDownload }) => {
   const handleSelectTab = (index) => {
     setSelectedTab(index);
     const layer = selectedLayers.filter(
-      (l) => l.id == tabsContent[index]?.props?.id
+      (l) => l.id === tabsContent[index]?.props?.id
     );
     store.dispatch(setActiveGFILayer(layer));
   };

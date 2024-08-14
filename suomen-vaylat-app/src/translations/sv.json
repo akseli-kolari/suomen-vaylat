@@ -7,9 +7,11 @@
     }
   },
   "title": "Suomen Väylät",
+  "extranet": "EXTRANET",
   "tooltips": {
     "showInfoLink": "Filtreringsinformation (öppnas på en ny flik)",
     "layerlist": {
+      "newLayer": "Ny",
       "filter": "Filtrera",
       "filterable": "Filtrerbart kartlager",
       "opacity": "Opacitet"
@@ -238,7 +240,7 @@
     "contactInfoFeedback": {
       "0": "Trafikledsverket ansvarar för applikationen som levereras av Sitowise Oy.",
       "1": "Respons om Suomen Väylät -karttjänsten kan skickas till adressen",
-      "2": "suomenvaylat@vayla.fi",
+      "2": "paikkatieto@vayla.fi",
       "3": "Respons gällande landsvägar, järnvägar och farleder kan ges via",
       "4": "https://liikenne.palautevayla.fi/feedback",
       "emailSubject": "Respons om Finlands Trafikleder"
@@ -406,6 +408,7 @@
     "carriageWaySearch": "Använda körbanasökning"
   },
   "layerlist": {
+    "errorLoadingLayers": "Det gick inte att ladda kartnivåer",
     "layerlistLabels": {
       "allLayers": "Alla lager",
       "themeLayers": "Teman",
@@ -421,7 +424,9 @@
       "clearSelectedMapLayers": "Ta bort valda kartnivåer",
       "clearSelectedBackgroundMaps": "Ta bort valda bakgrundskartor",
       "noSearchResults": "Inga sökresultat",
-      "typeAtLeastThreeCharacters": "Mata in minst 3 bokstäver"
+      "typeAtLeastThreeCharacters": "Mata in minst 3 bokstäver",
+      "createCustomFilter": "eget filter"
+
     },
     "selectedLayers": {
       "layerVisible": "Lager synligt",
@@ -429,6 +434,16 @@
       "zoomOutToShowLayer": "Zooma ut för att se kartlagret",
       "toShowLayer" : "för att se kartlagret",
       "opacity": "Genomskinlighet"
+    },
+    "customLayerInfo": {
+      "customFilter": "Eget filter",
+      "modalTitle": "Skapa ditt eget filter",
+      "closeInfo": "Stäng hjälpen",
+      "infoContent": "Du kan använda ditt eget filter för att spara valda lager i webbläsarens cache. Att redigera ditt eget filter är enhetsspecifikt. När du har valt önskade lager, tryck på knappen 'Spara'. Knappen 'Rensa alla' tar bort alla valda lager från filtret.",
+      "saveLayers": "Spara",
+      "removeLayers":"Rensa alla",
+      "editLayers": "Redigera",
+      "saveTooltip": "Välj de lager som ska sparas"
     }
   },
   "downloadLink": {
@@ -1088,6 +1103,8 @@
     "legendImage": "Legendbild",
     "openLayerGroup": "Öppen lagergrupp",
     "closeLayerGroup": "Stäng lagergrupp ",
+    "openSubLayerGroup": "Öppna en undergrupp ",
+    "closeSubLayerGroup": "Stäng undergruppen ",
     "layerInfo": "Lagerinformation",
     "closeLayer": "Stäng lager",
     "opacitySlider": "Justera lageropaciteten",

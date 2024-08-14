@@ -166,7 +166,7 @@ const StyledMasterGroupLayersCount = styled.p`
   padding: 0px;
   font-size: 12px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.8);
+  color: ${(props) => props.theme.colors.mainWhite};
 `;
 
 const StyledSubGroupLayersCount = styled.p`
@@ -291,48 +291,6 @@ const StyledSwitchButton = styled.div`
   transition: all 0.3s ease-out;
   background-color: ${(props) => props.theme.colors.mainWhite};
 `;
-
-const StyledCheckbox = styled.div`
-  position: absolute;
-  left: ${(props) => (props.isSelected ? "15px" : "0px")};
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  margin-left: 2px;
-  margin-right: 2px;
-  transition: all 0.3s ease-out;
-  background-color: ${(props) => props.theme.colors.mainWhite};
-`;
-
-const StyledCheckboxContainer = styled.label`
-  position: relative;
-  color: #fff;
-  width: 12px;
-  height: 12px;
-  display: inline-block;
-  margin-left: 5px;
-  margin-right: 5px;
-  cursor: pointer;
-
-  input[type="checkbox"]:checked ~ span.checkbox-icon {
-    background-color: #008000;
-  }
-`;
-
-const Checkbox = ({ action, isChecked }) => {
-  return (
-    <StyledCheckboxContainer isChecked={isChecked}>
-      <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={(event) => {
-          action(event.target.checked);
-        }}
-      />
-      <StyledCheckbox isSelected={isChecked} />
-    </StyledCheckboxContainer>
-  );
-};
 
 const Switch = ({ action, isSelected }) => {
   return (
@@ -607,7 +565,17 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
             onClick={() => setIsOpen(!isOpen)}
           >
             <StyledLefContent>
-              <StyledSelectButton subGroup={true}>
+              <StyledSelectButton aria-label={isOpen ? strings.accessibility.closeSubLayerGroup + group.locale[currentLang] && group.locale[currentLang].name
+                    ? group.locale[currentLang].name
+                    : group.locale[defaultLang] &&
+                      group.locale[defaultLang].name
+                    ? group.locale[defaultLang].name
+                    : group.id : strings.accessibility.openSubLayerGroup + group.locale[currentLang] && group.locale[currentLang].name
+                    ? group.locale[currentLang].name
+                    : group.locale[defaultLang] &&
+                      group.locale[defaultLang].name
+                    ? group.locale[defaultLang].name
+                    : group.id} subGroup={true}>
                 <StyledMotionIconWrapper
                   initial="closed"
                   animate={isOpen ? "open" : "closed"}
@@ -718,10 +686,10 @@ export const LayerGroup = ({ group, layers, hasChildren }) => {
                 layers={layers}
                 recurse={true}
               />
-              <Layers layers={filteredLayers} isOpen={isOpen} />
+              <Layers layers={filteredLayers}/>
             </>
           )}
-          {!hasChildren && <Layers layers={filteredLayers} isOpen={isOpen} />}
+          {!hasChildren && <Layers layers={filteredLayers}/>}
         </StyledLayerGroup>
       </StyledLayerGroups>
     </>

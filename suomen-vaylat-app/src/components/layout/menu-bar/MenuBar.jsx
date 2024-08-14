@@ -75,11 +75,10 @@ const StyledLayerCount = styled.div`
 
 const MenuBar = () => {
     const { store } = useContext(ReactReduxContext);
-    const { selectedLayers, downloads, channel, filters } = useAppSelector(
+    const { selectedLayers, downloads, channel, filters, selectedLayersByType } = useAppSelector(
         (state) => state.rpc
     );
 
-    const { drawToolMarkers } = useAppSelector(state => state.ui);
 
     const {
         isFullScreen,
@@ -91,6 +90,7 @@ const MenuBar = () => {
         isGfiOpen,
         isGfiDownloadOpen,
         activeTool,
+        drawToolMarkers
     } = useAppSelector((state) => state.ui);
 
     const [animationUnfinished, setAnimationUnfinished] = useState(false);
@@ -133,7 +133,7 @@ const MenuBar = () => {
         }
     };
 
-    const closeDrawingTools = () => {
+    const closeDrawingTools = (open) => {
         // remove geometries off the map
         channel && channel.postRequest('DrawTools.StopDrawingRequest', []);
         store.dispatch(setGeoJsonArray([]));
@@ -144,7 +144,7 @@ const MenuBar = () => {
         drawToolMarkers.forEach(marker => {
             store.dispatch(removeMarkerRequest({markerId: marker}));
         });
-        store.dispatch(setIsDrawingToolsOpen(!isDrawingToolsOpen));
+        store.dispatch(setIsDrawingToolsOpen(open));
         store.dispatch(setSelectedMarker(2));
         // remove all markers made with drawing tools
         drawToolMarkers.forEach(marker => {
@@ -202,6 +202,9 @@ const MenuBar = () => {
         else return;
     };
 
+    // If only background maps are selected, disable download button
+    const nonBgMaps = selectedLayers.filter((layer) =>  layer.groups?.every((group)=> group !==1) && selectedLayersByType.backgroundMaps.filter(l => l.id === layer.id).length === 0);
+
     return (
         <>
             <StyledMenuBar isSearchOpen={isSearchOpen}>
@@ -236,13 +239,15 @@ const MenuBar = () => {
                 }
                 </CircleButton>
                 <CircleButton
+                    disabled={nonBgMaps.length === 0}
                     icon={faDownload}
                     text={strings.downloads.downloads}
                     toggleState={isGfiDownloadOpen}
                     tooltipDirection={"right"}
-                    clickAction={() =>
+                    clickAction={() => {
+                        closeDrawingTools(false);
                         store.dispatch(setIsGfiDownloadOpen(!isGfiDownloadOpen))
-                    }
+                    }}
                 >
                     <StyledLayerCount>
                         {
@@ -258,7 +263,7 @@ const MenuBar = () => {
                         text={strings.tooltips.drawingTools.drawingToolsButton}
                         toggleState={isDrawingToolsOpen}
                         tooltipDirection={"right"}
-                        clickAction={closeDrawingTools}
+                        clickAction={() => closeDrawingTools(!isDrawingToolsOpen)}
                     />
                     <DrawingTools isOpen={isDrawingToolsOpen} />
                 </StyledMapToolsContainer>
