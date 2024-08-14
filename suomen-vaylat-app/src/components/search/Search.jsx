@@ -215,12 +215,18 @@ const Search = () => {
     const [firstSearchResultShown, setFirstSearchResultShown] = useState(false);
     const [showToast, setShowToast] = useState(JSON.parse(localStorage.getItem(SEARCH_TIP_LOCALSTORAGE)));
     const [carriageWaySearch, setCarriageWaySearch] = useState(false);
-
+    const [trackErrors, setTrackErrors] = useState([false, false, false]);
     const handleSeach = (searchValue) => {
         setShowSearchResults(true);
         switch (searchType) {
             case 'address':
-                handleAddressSearch(searchValue);
+                if (activeSwitch==='track'){
+                    if ( validateTrackSearch(searchValue, setTrackErrors))
+                    handleAddressSearch(searchValue);
+                }else {
+                    handleAddressSearch(searchValue);
+                }
+ 
                 break;
             case 'metadata':
                 handleMetadataSearch(searchValue);
@@ -605,6 +611,29 @@ const Search = () => {
         else toast.dismiss('searchTipToast');
     }, [geoJsonArray]);
 
+    const validateTrackSearch = (searchValue, setTrackErrors) => {
+        let searchArray = searchValue.split("/");
+        const newErrors = Array(3).fill(false);
+        // If there are not exactly 3 values, populate the errors array accordingly
+        if (searchArray.length !== 3) {
+            for (let i = 0; i < 3; i++) {
+                if (!searchArray[i]) {
+                    newErrors[i] = true;
+                }
+            }
+        } else {
+            // Check for any empty values
+            searchArray.forEach((value, index) => {
+                if (value === '') {
+                    newErrors[index] = true;
+                }
+            });
+        }
+        setTrackErrors(newErrors);
+        return newErrors.every((error) => error === false)
+    }
+    
+
     useEffect(() => {
         //when carriagewaysearch ( ajordalla haku ) changes, reset searchValue
         setSearchValue('');
@@ -731,6 +760,10 @@ const Search = () => {
                         carriageWaySearch={carriageWaySearch}
                         setCarriageWaySearch={setCarriageWaySearch}
                         removeMarkersAndFeatures={removeMarkersAndFeatures}
+                        activeSwitch={activeSwitch}
+                        trackErrors={trackErrors}
+                        setTrackErrors={setTrackErrors}
+                        validateTrackSearch={validateTrackSearch}
                     />            
                 )}  
                 

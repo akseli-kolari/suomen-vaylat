@@ -258,28 +258,6 @@ const parseTrackSearchQuery = (searchQuery) => {
     return searchQuery.endsWith('/') ? searchQuery.slice(0, -1) : searchQuery;
 }
 
-const validateTrackSearch = (searchValue, setTrackErrors) => {
-    let searchArray = searchValue.split("/");
-    const newErrors = Array(3).fill(false);
-    // If there are not exactly 3 values, populate the errors array accordingly
-    if (searchArray.length !== 3) {
-        for (let i = 0; i < 3; i++) {
-            if (!searchArray[i]) {
-                newErrors[i] = true;
-            }
-        }
-    } else {
-        // Check for any empty values
-        searchArray.forEach((value, index) => {
-            if (value === '') {
-                newErrors[index] = true;
-            }
-        });
-    }
-    setTrackErrors(newErrors);
-    return newErrors.every((error) => error === false)
-
-}
 
 
 const SearchModal = ({
@@ -305,11 +283,14 @@ const SearchModal = ({
     toggleModal,
     carriageWaySearch, 
     setCarriageWaySearch,
-    removeMarkersAndFeatures
+    removeMarkersAndFeatures,
+    activeSwitch,
+    trackErrors,
+    setTrackErrors,
+    validateTrackSearch
 }) => {
     const { store } = useContext(ReactReduxContext);
-    const { activeSwitch } = useAppSelector((state) => state.ui);
-    const [trackErrors, setTrackErrors] = useState([false, false, false]);
+
 
     const updateActiveSwitch = (type) => {
         // if no specific search is selected, default to address
@@ -338,7 +319,7 @@ const SearchModal = ({
             validateTrackSearch(searchValue, setTrackErrors)
         }
         setSearchValue(searchValue)
-    }, [activeSwitch, searchValue, setSearchValue]);  
+    }, [activeSwitch, searchValue, setSearchValue, setTrackErrors, validateTrackSearch]);  
 
     return isOpen ? (
         <StyledSearchModal>   
