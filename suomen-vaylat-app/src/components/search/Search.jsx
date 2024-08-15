@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { ReactReduxContext } from 'react-redux';
 import { useAppSelector } from '../../state/hooks';
@@ -611,7 +611,7 @@ const Search = () => {
         else toast.dismiss('searchTipToast');
     }, [geoJsonArray]);
 
-    const validateTrackSearch = (searchValue, setTrackErrors) => {
+    const validateTrackSearch = useCallback( (searchValue, setTrackErrors) => {
         let searchArray = searchValue.split("/");
         const newErrors = Array(3).fill(false);
         // If there are not exactly 3 values, populate the errors array accordingly
@@ -631,7 +631,8 @@ const Search = () => {
         }
         setTrackErrors(newErrors);
         return newErrors.every((error) => error === false)
-    }
+    }, []
+    )
     
 
     useEffect(() => {

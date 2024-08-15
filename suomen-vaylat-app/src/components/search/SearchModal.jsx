@@ -319,7 +319,7 @@ const SearchModal = ({
             validateTrackSearch(searchValue, setTrackErrors)
         }
         setSearchValue(searchValue)
-    }, [activeSwitch, searchValue, setSearchValue, setTrackErrors, validateTrackSearch]);  
+    }, [activeSwitch, searchValue, setSearchValue, setTrackErrors, validateTrackSearch]);
 
     return isOpen ? (
         <StyledSearchModal>   
