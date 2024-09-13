@@ -1,18 +1,20 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAppSelector } from "../../../../state/hooks";
 import strings from "../../../../translations";
 import styled from "styled-components";
 import FilterLayerGroup from "./FilterLayerGroup";
 import store from "../../../../state/store";
 import {
+  setIsSavedLayer,
   incrementTriggerUpdate,
   setIsCustomFilterOpen,
+  setShowCustomLayerList,
   setUpdateCustomLayers,
   setCheckedLayer,
   setShowSavedLayers,
   setSelectedCustomFilterLayers,
 } from "../../../../state/slices/uiSlice";
-import { theme } from "../../../../theme/theme";
+import { theme, isMobile } from "../../../../theme/theme";
 import ReactTooltip from "react-tooltip";
 
 const StyledModalContainer = styled.div`
@@ -29,43 +31,41 @@ const StyledGuideContent = styled.div`
 
 const StyledButtonContainer = styled.div`
   display: flex;
-  margin: 1em;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
+  margin-right: 35px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 25px;
 `;
 
 const StyledSaveButton = styled.div`
-  height: 2.5em;
+  width: 78px;
+  height: 32px;
   display: flex;
   margin-top: 10px;
   margin-bottom: 10px;
-  padding: 1em;
   justify-content: center;
   align-items: center;
   border-radius: 30px;
   background-color: ${(props) =>
     props.isDisabled ? "#DDDDDD" : props.theme.colors.mainColor1};
   cursor: ${(props) => (props.isDisabled ? "not-allowed" : "pointer")};
-  font-size: 14px;
-  color:  ${(props) => props.theme.colors.mainWhite};
-  font-weight: 500;
+  font-size: 13px;
+  color: #fff;
 `;
 
 const StyledRemoveButton = styled.div`
-  height: 2.5em;
+  width: 78px;
+  height: 15px;
+  white-space: nowrap;
+  text-align: center;
   display: flex;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 1em;
   justify-content: center;
   align-items: center;
-  border-radius: 30px;
-  cursor: ${(props) => (props.isDisabled ? "not-allowed" : "pointer")};
-  font-size: 14px;
-  border-style: solid;
-  color:  ${(props) => props.theme.colors.mainColor1};
-  font-weight: 500;
+  background-color: #ffffff;
+  cursor: pointer;
+  font-size: 15px;
+  color: ${(props) =>
+    props.isOpen ? "#004477" : props.theme.colors.mainColor1};
 `;
 
 const StyledLayerList = styled.div`
@@ -92,6 +92,8 @@ const StyledLayerGroupWrapper = styled.div``;
 // Checkbox logic and rendering is done in Layer.jsx
 
 export const CustomLayerList = ({ groups, layers, recurse = false }) => {
+  const [savedLayers, setSavedLayers] = useState([]);
+
   // const slicedGroups = groups ? groups.slice() : [];
   const slicedGroups = groups.slice();
 
@@ -196,24 +198,20 @@ export const CustomLayerModalContent = ({
     },
   ];
 
+  
+
   useEffect(() => {
     const checkedLayers = localStorage.getItem('checkedLayers')
-    const checkedLayersJson = JSON.parse(checkedLayers);
 
-    if (checkedLayersJson !== null && checkedLayersJson.length > 0 && selectedCustomFilterLayers.length === 0) {
-      checkedLayers && store.dispatch(
-          setSelectedCustomFilterLayers(checkedLayersJson)
-        );
-    } else {  
-      if (checkedLayersJson !== null && checkedLayersJson.length !== selectedCustomFilterLayers.length) {
-        store.dispatch(setUpdateCustomLayers(true));
-      } else if (checkedLayersJson === null && selectedCustomFilterLayers.length > 0) {
-        store.dispatch(setUpdateCustomLayers(true));
-      } else {
-        store.dispatch(setUpdateCustomLayers(false));
-      }
+    if (checkedLayers) {
+      const checkedLayersJson = JSON.parse(checkedLayers);
+      checkedLayersJson.length !== selectedCustomFilterLayers.length && store.dispatch(setUpdateCustomLayers(true));
+    } else if (selectedCustomFilterLayers.length > 0) {
+      store.dispatch(setUpdateCustomLayers(true));
+    } else {
+      store.dispatch(setUpdateCustomLayers(false));
     }
-  }, [selectedCustomFilterLayers, updateCustomLayer]);
+  }, [selectedCustomFilterLayers]);
 
 
   const saveLayers = () => {
@@ -253,9 +251,6 @@ export const CustomLayerModalContent = ({
           <div>{content.content}</div>
 
           <StyledButtonContainer>
-            <StyledRemoveButton onClick={removeLayers} checked={!isChecked}>
-              {strings.layerlist.customLayerInfo.removeLayers}
-            </StyledRemoveButton>
             <StyledSaveButton
               onClick={() => {
                 saveLayers();
@@ -266,6 +261,9 @@ export const CustomLayerModalContent = ({
             >
               {strings.layerlist.layerlistLabels.saveCustomFilter}
             </StyledSaveButton>
+            <StyledRemoveButton onClick={removeLayers} checked={!isChecked}>
+              {strings.layerlist.customLayerInfo.removeLayers}
+            </StyledRemoveButton>
           </StyledButtonContainer>
 
           <div>{content.layerlist}</div>

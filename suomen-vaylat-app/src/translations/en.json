@@ -7,11 +7,9 @@
     }
   },
   "title": "Suomen Väylät",
-  "extranet": "EXTRANET",
   "tooltips": {
     "showInfoLink": "Filtering info (opens in a new tab)",
     "layerlist": {
-      "newLayer": "New",
       "filter": "Filter",
       "filterable": "Filterable layer",
       "opacity": "Opacity"
@@ -241,7 +239,7 @@
     "contactInfoFeedback": {
       "0": "The application is the responsibility of the Finnish Transport Infrastructure Agency and it is supplied by Sitowise Oy.",
       "1": "Send your feedback on the Suomen Väylät map service to",
-      "2": "paikkatieto@vayla.fi",
+      "2": "suomenvaylat@vayla.fi",
       "3": "Feedback regarding roads, railways and waterways can be given at",
       "4": "https://liikenne.palautevayla.fi/feedback",
       "emailSubject": "Feedback on Suomen Väylät"
@@ -409,7 +407,6 @@
     "carriageWaySearch": "Use driving_lane search"
   },
   "layerlist": {
-    "errorLoadingLayers": "Error loading maplayers",
     "layerlistLabels": {
       "allLayers": "All layers",
       "themeLayers": "Themes",
@@ -425,8 +422,7 @@
       "clearSelectedMapLayers": "Clear selected map layers",
       "clearSelectedBackgroundMaps": "Clear selected background maps",
       "noSearchResults": "No search results",
-      "typeAtLeastThreeCharacters": "Type at least 3 characters",
-      "createCustomFilter": "custom filter"
+      "typeAtLeastThreeCharacters": "Type at least 3 characters"
     },
     "selectedLayers": {
       "layerVisible": "Layer visible",
@@ -434,16 +430,6 @@
       "zoomOutToShowLayer": "Zoom out to see the map layer",
       "toShowLayer" : "to see the map layer",
       "opacity": "Transparency"
-    },
-    "customLayerInfo": {
-      "customFilter": "Custom filter",
-      "modalTitle": "Create custom filter",
-      "closeInfo": "Close info",
-      "infoContent": "You can use your custom filter to save selected layers in the browser's cache. Editing your custom filter is device-specific. Once you have selected the desired layers, press the 'Save' button. The 'Clear All' button removes all selected layers from the filter.",
-      "saveLayers": "Save",
-      "removeLayers":"Clear all",
-      "editLayers": "Edit",
-      "saveTooltip": "Choose custom filter layers"
     }
   },
   "downloadLink": {
@@ -1103,8 +1089,6 @@
     "legendImage": "Legend image",
     "openLayerGroup": "Open layer group ",
     "closeLayerGroup": "Close layer group ",
-    "openSubLayerGroup": "Open subgroup ",
-    "closeSubLayerGroup": "Close subgroup ",
     "layerInfo": "Layer info",
     "closeLayer": "Close layer",
     "opacitySlider": "Adjust layer opacity",

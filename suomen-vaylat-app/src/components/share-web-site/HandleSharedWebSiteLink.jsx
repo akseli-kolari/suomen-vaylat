@@ -7,8 +7,6 @@ import {  setIsSideMenuOpen, setIsThemeMenuOpen, setSelectedMapLayersMenuTab } f
 import { Logger } from '../../utils/logger';
 import { updateLayers, selectGroup } from '../../utils/rpcUtil';
 import { isMobile} from '../../theme/theme';
-import { Slide, toast } from "react-toastify";
-import strings from '../../translations';
 
 const LOG = new Logger('HandleSharedWebSiteLink');
 
@@ -63,37 +61,9 @@ export const HandleSharedWebSiteLink = () => {
         })
 
         if (activateTheme){
-            channel.getAllLayersSV(function (data) {
-                selectGroup(store, channel, data, activateTheme, null, null);
-                !isMobile && store.dispatch(setIsThemeMenuOpen(true));
-            }, function err() {
-                toast.error(strings.layerlist.errorLoadingLayers, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                    transition: Slide
-                });
-            });
-            channel && channel.getAllLayersSV(function (allLayers) {
+            channel && channel.getAllLayers(function (allLayers) {
                 selectGroup(store, channel, allLayers, activateTheme, null, null);
                 !isMobile && store.dispatch(setIsThemeMenuOpen(true));
-            }, function err() {
-                toast.error(strings.layerlist.errorLoadingLayers, {
-                    position: "top-center",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "colored",
-                    transition: Slide
-                });
             });
         }
     }
@@ -125,6 +95,6 @@ export const HandleSharedWebSiteLink = () => {
     });
 
     // last update layers to redux
-    channel && updateLayers(store, channel);
+    updateLayers(store, channel);
     return (<></>);
 };

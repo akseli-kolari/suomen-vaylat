@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import strings from "../../translations";
 
 const StyledWarningModalContainer = styled.div`

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 
 import { v4 as uuidv4 } from 'uuid';
 
-import { setIsSaveViewOpen, setWarning, setSavedTabIndex, addToActiveGeometries, removeActiveGeometry, removeFromDrawToolMarkers } from '../../state/slices/uiSlice';
+import { setIsSaveViewOpen, setWarning, setSavedTabIndex, setGeoJsonArray, addToActiveGeometries, removeActiveGeometry, removeFromDrawToolMarkers, setActiveTool, } from '../../state/slices/uiSlice';
 
 import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

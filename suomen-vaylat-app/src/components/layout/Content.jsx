@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef } from "react";
+import { useState, useContext, useEffect, useRef, useCallback } from "react";
 import { ReactReduxContext } from "react-redux";
 import { ToastContainer, Slide, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,8 +38,7 @@ import {
   setMinimizeFilterModal,
   setMaximizeFilterModal,
   setShowSavedLayers,
-  setIsFeedBackFormOpen,
-  setSelectedCustomFilterLayers
+  setIsFeedBackFormOpen
 } from "../../state/slices/uiSlice";
 
 import {
@@ -199,14 +198,14 @@ const Content = () => {
   const search = useAppSelector((state) => state.search);
   const { store } = useContext(ReactReduxContext);
   const isShareOpen = shareUrl && shareUrl.length > 0 ? true : false;
-  let { downloadLink, isCustomFilterOpen, isFeedbackFormOpen } = useAppSelector((state) => state.ui);
+  let { downloadLink, isCustomFilterOpen, updateCustomLayer, isFeedbackFormOpen } = useAppSelector((state) => state.ui);
 
   const announcements = useAppSelector(
     (state) => state.rpc.activeAnnouncements
   );
   const metadata = useAppSelector((state) => state.rpc.layerMetadata);
 
-  let { channel, allLayers, allGroups } = useAppSelector((state) => state.rpc);
+  let { channel, selectedLayers, allLayers, allGroups } = useAppSelector((state) => state.rpc);
 
   const addToLocalStorageArray = (name, value) => {
     // Get the existing data
@@ -223,13 +222,13 @@ const Content = () => {
     localStorage.setItem(name, existing.toString());
   };
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [currentAnnouncement, setCurrentAnnouncement] = useState(null);
 
   const handleCustomFilterClose = () => {
     store.dispatch(setIsCustomFilterOpen(false));
     store.dispatch(setUpdateCustomLayers(false));
-    store.dispatch(setSelectedCustomFilterLayers([]));
-
     const checkedLayers = localStorage.getItem('checkedLayers');
     if (!checkedLayers || JSON.parse(checkedLayers).length === 0) {
       store.dispatch(setShowSavedLayers(false));
@@ -704,6 +703,30 @@ const Content = () => {
           constraintsRef={
             constraintsRef
           } /* Reference div for modal drag boundaries */
+          drag={true} /* Enable (true) or disable (false) drag */
+          resize={false}
+          backdrop={true} /* Is backdrop enabled (true) or disabled (false) */
+          fullScreenOnMobile={
+            true
+          } /* Scale modal full width / height when using mobile device */
+          titleIcon={null} /* Use icon on title or null */
+          title={
+            strings.layerlist.customLayerInfo.infoTitle
+          } /* Modal header title */
+          type={"normal"} /* Modal type */
+          closeAction={
+            handleCustomFilterClose
+          } /* Action when pressing modal close button or backdrop */
+          isOpen={isCustomFilterOpen} /* Modal state */
+          id={null}
+          height="860px"
+        >
+          <CustomLayerModal />
+        </Modal>
+        <Modal
+          constraintsRef={
+            constraintsRef
+          } /* Reference div for modal drag boundaries */
           drag={false} /* Enable (true) or disable (false) drag */
           resize={false}
           backdrop={true} /* Is backdrop enabled (true) or disabled (false) */
@@ -734,7 +757,7 @@ const Content = () => {
           } /* Scale modal full width / height when using mobile device */
           titleIcon={null} /* Use icon on title or null */
           title={
-            strings.layerlist.customLayerInfo.modalTitle
+            strings.layerlist.customLayerInfo.infoTitle
           } /* Modal header title */
           type={"normal"} /* Modal type */
           closeAction={

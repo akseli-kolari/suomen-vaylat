@@ -1,8 +1,17 @@
+import { useState } from 'react';
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import FilterLayerGroup from './FilterLayerGroup';
+
 import strings from '../../../../translations';
 
-const StyledLayerList = styled.div``;
+
+const StyledLayerList = styled.div`
+
+`;
 
 const StyledLayerGroupWrapper = styled.div``;
 

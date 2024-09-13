@@ -1,7 +1,7 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, useCallback } from 'react';
 import { faInfoCircle, faTimes, faCaretDown, faCaretUp, faGripLines, faEye, faEyeSlash, faLayerGroup, faMap, faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { clearLayerMetadata, getLayerMetadata, setLayerMetadata, setZoomTo, setFilteringInfo, setFilters } from '../../../state/slices/rpcSlice';
 import { updateLayers } from '../../../utils/rpcUtil';

@@ -9,7 +9,7 @@ import store from '../../state/store';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ReactTooltip from 'react-tooltip';
 import { useAppSelector } from '../../state/hooks';
-import { setIsMoreSearchOpen } from '../../state/slices/uiSlice';
+import { setIsMoreSearchOpen, setActiveSwitch } from '../../state/slices/uiSlice';
 import { isMobile } from '../../theme/theme';
 
 const InputContainer = styled.div`

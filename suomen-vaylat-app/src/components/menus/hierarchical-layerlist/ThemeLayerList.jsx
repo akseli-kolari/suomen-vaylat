@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from 'react';
-import { faExternalLinkAlt, faLink, faAngleDown, faRoad, faShip, faTrain } from '@fortawesome/free-solid-svg-icons';
+import { faMap, faExternalLinkAlt, faLink, faAngleDown, faRoad, faShip, faTrain } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { ReactReduxContext } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -8,8 +8,8 @@ import { useAppSelector } from '../../../state/hooks';
 import strings from '../../../translations';
 import { setZoomTo } from '../../../state/slices/rpcSlice';
 import { setWarning } from '../../../state/slices/uiSlice';
-import { selectGroup, sortObjectAlphabetically } from '../../../utils/rpcUtil';
-import Layers from '../hierarchical-layerlist/Layers';
+import { selectGroup } from '../../../utils/rpcUtil';
+import Layers from './Layers';
 
 import hankekartta from './hankekartta.JPG';
 import intersection from './Intersection.jpg';
@@ -33,7 +33,7 @@ const StyledLayerGroups = styled.div`
     flex-direction: column;
     justify-content: center;
     margin: 8px 0px 8px 0px;
-    padding-left: ${props => props.isFirstSubtheme ? '0px' : '16px'};
+    padding: 0px 16px;
     &:last-child {
         ${props => props.parentId === -1 ? '1px solid '+props.theme.colors.mainColor2 : 'none'};
     };
@@ -206,7 +206,7 @@ const StyledSelectButton = styled.div`
     justify-content: center;
     align-items: center;
     background-color: transparent;
-    margin: 1em;
+    margin-right: 16px;
     border: 2px solid white;
     border-radius: 50%;
     &:before {
@@ -235,12 +235,6 @@ const StyledLayerGroupContainer = styled(motion.div)`
 `;
 
 const StyledInfoHeaderIconContainer = styled(motion.div)`
-    color: ${props => props.theme.colors.mainWhite};
-`;
-
-
-const StyledThemeArrow = styled(motion.div)`
-    margin: 1em;
     color: ${props => props.theme.colors.mainWhite};
 `;
 
@@ -293,10 +287,6 @@ const StyledMasterGroupHeaderIconLetter = styled.div`
     }
 `;
 
-const StyledSubthemes = styled.div`
-    padding: 0px 16px;
-`;
-
 const themeImages = {
     hankekartta: hankekartta,
     päällysteidenkuntokartta: intersection,
@@ -318,21 +308,22 @@ const mainThemeImages = {
     }
 };
 
-const getDescTagContent = (text, startTag, endTag) => { 
-    let links = []; 
-    let index = 0;
-    
-    while (index < text.length) {
-        let startPos = text.indexOf(startTag, index);
-        if (startPos === -1) break;
+const getLinks = (text, startTag, endTag) => {
+    let links = [];
+    let index = -1;
+    while (true)
+    {
+        let i = text.indexOf(startTag, index);
 
-        let endPos = text.indexOf(endTag, startPos + startTag.length);
-        if (endPos === -1) break; // Added this to handle cases where the end tag is not found
+        if (i == -1) break;
 
-        let link = text.substring(startPos + startTag.length, endPos);
-        links.push(link);
-
-        index = endPos + endTag.length;
+        if (index == -1) {
+            index = i;
+        } else {
+            let j = text.indexOf(endTag, index);
+            links.push(text.substring(index + startTag.length, j));
+            index = j + endTag.length;
+        }
     }
     return links;
 }
@@ -369,8 +360,6 @@ export const ThemeLayerList = ({
     for(var i in strings.themeLinks) {
         linksArray.push(strings.themeLinks[i]);
     }
-
-    allThemes.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name));
 
     return (
         <>
@@ -415,10 +404,15 @@ export const ThemeLayerList = ({
                                 type: "tween"
                             }}
                         >
-                                <Themes
-                                    groups={[...themeGroup?.groups]}
+                            { themeGroup?.groups?.map((theme, index) => {
+                                return <Themes
+                                    lang={lang}
+                                    key={index}
+                                    theme={theme}
                                     allLayers={allLayers}
+                                    index={index}
                                 />
+                            })}
                         </StyledLayerGroupContainer>
                     </>
                 )
@@ -428,12 +422,13 @@ export const ThemeLayerList = ({
     );
   };
 
-  export const Themes = ({
-    groups,
-    allLayers
+export const Themes = ({
+    lang,
+    allLayers,
+    theme,
+    index
 }) => {
     const { store } = useContext(ReactReduxContext);
-    const lang = strings.getLanguage();
 
     const {
         channel,
@@ -441,43 +436,33 @@ export const ThemeLayerList = ({
         lastSelectedTheme,
         selectedThemeId,
     } = useAppSelector((state) => state.rpc);
+    
     const handleSelectGroup = (theme) => {
         selectGroup(store, channel, allLayers, theme, lastSelectedTheme, selectedThemeId);
     };
 
-    let links = [];
-    let themes = [];
-    groups.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name)).forEach((group, index) => {
-        // Check if desc had url links so those can be displayed as links instead of group themes
-	    const txt = (group.locale[lang].desc && group.locale[lang].desc.length > 0 && group.locale[lang].desc) || false;
-        const link = (txt && getDescTagContent(txt.replace(/\s/g, ''), "<url>", "</url>")[0]) || [];
-        if (link.length > 0) {
-                links.push({group, link, index});
-        } else {
-            themes.push({group, index});
-        }
-    })
-
+    // Check if desc had url links so those can be displayed as links instead of group themes
+    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
+    const link = txt && getLinks(txt.replace(/\s/g, ''), "<url>", "</url>")[0] || [];
+    
     return (
-        <StyledSubthemes>
-            { themes.length > 0 && themes.map(theme => {
-                return <ThemeGroup
-                key={theme.index}
-                lang={lang}
-                theme={theme.group}
-                layers={allLayers}
-                index={theme.index}
-                selectedTheme={selectedTheme}
-                selectGroup={handleSelectGroup}
-                selectedThemeId={selectedThemeId}
-                isSubtheme={false}
-                isFirstSubtheme={true}
+        <>
+            { link.length > 0 ?
+                <ThemeLinkList index={index} link={link} theme={theme} lang={lang}/>
+            :
+                <ThemeGroup
+                    key={index}
+                    lang={lang}
+                    theme={theme}
+                    layers={allLayers}
+                    index={index}
+                    selectedTheme={selectedTheme}
+                    selectGroup={handleSelectGroup}
+                    selectedThemeId={selectedThemeId}
+                    isSubtheme={false}
                 />
-            })}
-            { links.length > 0 && links.map((link, index) => {
-                return <ThemeLinkList key={index} isFirstSubtheme={true} index={link.index} link={link.link} theme={link.group} lang={lang}/>
-            })}
-        </StyledSubthemes>
+            }
+        </>
     )
 };
 
@@ -488,10 +473,8 @@ export const ThemeGroup = ({
     index,
     selectedThemeId,
     selectGroup,
-    isSubtheme,
-    isFirstSubtheme
+    isSubtheme
 }) => {
-    const [isThemeOpen, setIsThemeOpen] = useState(false);
     const [subthemeIsOpen, setSubthemeIsOpen] = useState(false);
     const [totalGroupLayersCount, setTotalGroupLayersCount] = useState(0);
     const [totalVisibleGroupLayersCount, setTotalVisibleGroupLayersCount] = useState(0);
@@ -516,45 +499,30 @@ export const ThemeGroup = ({
     const isOpen = isSubtheme ? subthemeIsOpen : theme.id === selectedThemeId || (theme.hasOwnProperty("groups") && theme.groups.find(t => t.id === selectedThemeId));
     
     // check if group desc has img tags in order to display linked image instead of possible default
-    const txt = (theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc) || false;
-    const images = (txt && getDescTagContent(txt.replace(/\s/g, ''), "<img>", "</img>")) || [];
+    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
+    const images = txt && getLinks(txt.replace(/\s/g, ''), "<img>", "</img>") || [];
+
     const themeNameFi = theme.locale["fi"].name.toLowerCase().replace(/\s/g, '');
 
-    let groups = [];
-    if (theme.groups) {
-        groups = [...theme.groups];
-        groups.sort((a, b) => sortObjectAlphabetically(a.locale[lang].name, b.locale[lang].name));
-    }
-
     return (
-        <StyledLayerGroups isFirstSubtheme={isFirstSubtheme} isSubtheme={isSubtheme} index={index}>
+        <StyledLayerGroups index={index}>
             {!isSubtheme ?
                 <StyledMasterGroupHeader
                     key={'smgh_' + theme.id}
-                    isOpen={isThemeOpen}
+                    onClick={() => {
+                        selectGroup(theme);
+                    }}
+                    isOpen={isOpen}
                 >
-
-                    <StyledThemeArrow
-                        onClick={() => setIsThemeOpen(!isThemeOpen)}
-                        animate={{
-                            transform: isThemeOpen
-                            ? 'rotate(180deg)'
-                            : 'rotate(0deg)',
-                        }}
-                    >
-                        <FontAwesomeIcon
-                            icon={faAngleDown}
-                        />
-                    </StyledThemeArrow>
-                    <StyledMasterGroupName onClick={() => setIsThemeOpen(!isThemeOpen)}>
-                        {theme.locale[lang].name}
-                    </StyledMasterGroupName>
-                    <StyledRightContent
-                        onClick={(e) => {
-                            !isThemeOpen && setIsThemeOpen(true)
-                            selectGroup(theme);
-                        }}
-                    >
+                    <StyledLeftContent>
+                        <StyledMasterGroupHeaderIcon>
+                            <FontAwesomeIcon
+                                icon={faMap}
+                            />
+                        </StyledMasterGroupHeaderIcon>
+                        <StyledMasterGroupName>{theme.locale[lang].name}</StyledMasterGroupName>
+                    </StyledLeftContent>
+                    <StyledRightContent>
                         <StyledSelectButton
                             isOpen={isOpen}
                         >
@@ -594,7 +562,7 @@ export const ThemeGroup = ({
                 </StyledSubthemeHeader>
             }
                     {
-                        !isThemeOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
+                        !isOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
                             <ThemeDesc
                                 theme={theme}
                                 lang={lang}
@@ -605,7 +573,7 @@ export const ThemeGroup = ({
             <StyledLayerGroupContainer
                 key={'slg_' + index}
                 initial='hidden'
-                animate={isThemeOpen || isOpen ? 'visible' : 'hidden'}
+                animate={isOpen ? 'visible' : 'hidden'}
                 variants={listVariants}
                 transition={{
                     duration: 0.3,
@@ -615,9 +583,9 @@ export const ThemeGroup = ({
                 <div>
                     { images.length > 0 ?
                         (
-                            images.map((img, index) => {
+                            images.map((img) => {
                                 return(
-                                    <StyledLayerGroupImage src={img} key={index} alt=''/>
+                                    <StyledLayerGroupImage src={img} alt=''/>
                                 )
                             })
                         )
@@ -628,7 +596,7 @@ export const ThemeGroup = ({
                     }
 
                     {
-                        isThemeOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
+                        isOpen && theme.locale[lang].hasOwnProperty("desc") && theme.locale[lang].desc.length > 0 &&
                             <ThemeDesc
                                 theme={theme}
                                 lang={lang}
@@ -639,7 +607,7 @@ export const ThemeGroup = ({
                     <Layers layers={filteredLayers} isOpen={isOpen} themeName={theme.locale[lang].name}/>
                 </StyledLayerGroup>
 
-                {groups.map((subtheme, index) => {
+                {theme.groups && theme.groups.map((subtheme, index) => {
                         return (
                             <ThemeGroup
                                 key={index}
@@ -650,7 +618,6 @@ export const ThemeGroup = ({
                                 selectGroup={selectGroup}
                                 selectedThemeId={selectedThemeId}
                                 isSubtheme={true}
-                                isFirstSubtheme={!isSubtheme}
                             />
                         );
                     })
@@ -665,8 +632,7 @@ export const ThemeLinkList = ({
     theme,
     link,
     lang,
-    index,
-    isFirstSubtheme
+    index
 }) => {
     
     const { store } = useContext(ReactReduxContext);
@@ -702,7 +668,7 @@ export const ThemeLinkList = ({
 
     return (
         <>
-            <StyledLayerGroups  isFirstSubtheme={isFirstSubtheme} isSubtheme={false} index={index}>
+            <StyledLayerGroups index={index}>
                 <StyledMasterGroupHeader
                     key={'theme_link_'+theme.locale[lang].name}
                     onClick={(e) => handleLinkClick(e,link)}
@@ -742,10 +708,10 @@ export const ThemeDesc = ({
     }
 
     // Get content from desc (surrounded by HTMl tags)
+    const txt = theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc;
 
-    const txt = (theme.locale[lang].desc && theme.locale[lang].desc.length > 0 && theme.locale[lang].desc) || false;
-    const links = (txt && getDescTagContent(txt.replace(/\s/g, ''),"<a>", "</a>")) || []
-    const desc = (txt && getDescTagContent(txt, "<p>", "</p>")) || []
+    const links = getLinks(txt.replace(/\s/g, ''),"<a>", "</a>")
+    const desc = getLinks(txt, "<p>", "</p>")
     
     const { store } = useContext(ReactReduxContext);
 

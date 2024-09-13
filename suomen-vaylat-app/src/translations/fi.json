@@ -7,11 +7,9 @@
     }
   },
   "title": "Suomen Väylät",
-  "extranet": "EXTRANET",
   "tooltips": {
     "showInfoLink": "Suodatus info (avautuu uuteen välilehteen)",
     "layerlist": {
-      "newLayer": "Uusi",
       "filter": "Suodata",
       "filterable": "Suodatettava taso",
       "opacity": "Opasiteetti"
@@ -241,7 +239,7 @@
     "contactInfoFeedback": {
       "0": "Sovelluksesta vastaa Väylävirasto ja sovelluksen toimittaa Sitowise Oy.",
       "1": "Palautetta Suomen Väylät -palvelusta toivotaan lähetettävän osoitteeseen",
-      "2": "paikkatieto@vayla.fi",
+      "2": "suomenvaylat@vayla.fi",
       "3": "Palautetta maanteihin, rataverkkoon ja vesiväyliin liittyen voit antaa osoitteessa",
       "4": "https://liikenne.palautevayla.fi/feedback",
       "emailSubject": "Suomen Väylät palaute"
@@ -445,7 +443,6 @@
     "carriageWaySearch": "Käytä ajorataa haussa"
   },
   "layerlist": {
-    "errorLoadingLayers": "Virhe tasojen latauksessa",
     "layerlistLabels": {
       "allLayers": "Kaikki tasot",
       "themeLayers": "Teemakartat",
@@ -474,10 +471,9 @@
       "opacity": "Läpinäkyvyys"
     },
     "customLayerInfo": {
-      "customFilter": "Oma suodatin",
       "modalTitle": "Luo oma suodatin",
       "closeInfo": "Sulje ohje",
-      "infoContent": "Omalla suodattimella voidaan tallentaa valittuja tasoja selaimen välimuistiin. Oman suodattimen muokkaaminen on laitekohtaista. Kun olet valinnut halutut tasot, paina 'Tallenna' -painiketta. 'Tyhjennä kaikki' -painike poistaa kaikki valitut tasot suodattimesta.",
+      "infoContent": "Omalla suodattimella voidaan tallentaa valittuja tasoja selaimen välimuistiin. Tallennetut tasot ovat näkyvissä karttatasojen Kaikki tasot-välilehdessä sillä laitteella ja selaimessa, jossa karttatasot on tallennettu. Listasta voi säädellä valittujen tasojen näkyvyyttä kartalla. Kun olet valinnut halutut tasot, paina Tallenna-painiketta. Tallennuksen voi poistaa Tyhjennä kaikki-painikkeesta.",
       "saveLayers": "Tallenna",
       "removeLayers":"Tyhjennä kaikki",
       "editLayers": "Muokkaa",
@@ -1141,8 +1137,6 @@
     "legendImage": "Karttaselite kuva",
     "openLayerGroup": "Avaa tasoryhmä ",
     "closeLayerGroup": "Sulje tasoryhmä ",
-    "openSubLayerGroup": "Avaa aliryhmä ",
-    "closeSubLayerGroup": "Sulje aliryhmä ",
     "layerInfo": "Tason tiedot",
     "closeLayer": "Sulje taso",
     "opacitySlider": "Säädä tason läpinäkyvyyttä",

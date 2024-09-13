@@ -67,7 +67,7 @@ const StyledTabContent = styled.div`
 `;
 
 const GfiTabContent = ({ layer, data, title, tablePropsInit }) => {
-  const { filteringInfo, filters } = useAppSelector((state) => state.rpc);
+  const { channel, filteringInfo, filters } = useAppSelector((state) => state.rpc);
   const { store } = useContext(ReactReduxContext);
   const { minimizeFilter } = useAppSelector(state => state.ui);
 

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
-import { ReactReduxContext } from "react-redux";
+import { ReactReduxContext, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import FilterLayerList from "./FilterLayerList";
 import FilterLayers from "./FilterLayers";
@@ -165,7 +165,7 @@ const StyledMasterGroupLayersCount = styled.p`
   padding: 0px;
   font-size: 12px;
   font-weight: 500;
-  color: ${(props) => props.theme.colors.mainWhite};
+  color: rgba(255, 255, 255, 0.8);
 `;
 
 const StyledSubGroupLayersCount = styled.p`
@@ -173,7 +173,7 @@ const StyledSubGroupLayersCount = styled.p`
   padding: 0px;
   font-size: 12px;
   font-weight: 500;
-  color: ${(props) => props.theme.colors.mainColor1};
+  color: ${(props) => props.theme.colors.mainColor2};
 `;
 
 const StyledLefContent = styled.div`
@@ -316,7 +316,7 @@ export const FilterLayerGroup = ({ group, layers, hasChildren }) => {
   const [totalVisibleGroupLayersCount, setTotalVisibleGroupLayersCount] =
     useState(0);
 
-  const { selectedCustomFilterLayers } = useAppSelector((state) => state.ui);
+  const { isCustomFilterOpen, selectedCustomFilterLayers } = useAppSelector((state) => state.ui);
   const { allLayers } = useAppSelector((state) => state.rpc);
 
   useEffect(() => {
@@ -443,6 +443,35 @@ const setGroupLayersVisible = (boolean, group) => {
   store.dispatch(setSelectedCustomFilterLayers(filteredCustomLayers));
 };
 
+
+const setLayersVisible = (boolean) => {
+        
+    if (!boolean) {
+        const filteredCustomLayers = selectedCustomFilterLayers.filter(
+            (filterLayer) => !filteredLayers.includes(filterLayer)
+          );
+        store.dispatch(setSelectedCustomFilterLayers(filteredCustomLayers));
+    } else {
+        store.dispatch(setSelectedCustomFilterLayers([...selectedCustomFilterLayers, ...filteredLayers]))
+    }
+
+    
+  group.groups.forEach((group) => {
+    
+    if (!boolean) {
+        const filteredCustomLayers = selectedCustomFilterLayers.filter(
+            (filterLayer) => !filteredLayers.includes(filterLayer)
+          );
+        store.dispatch(setSelectedCustomFilterLayers(filteredCustomLayers));
+    } else {
+        const layers = allLayers.filter(l => group.layers.includes(l.id))
+        store.dispatch(setSelectedCustomFilterLayers([...selectedCustomFilterLayers, ...layers]))
+    }
+
+  });
+};
+
+
 const groupLayersVisibility = (e) => {
   e.stopPropagation();
 
@@ -495,17 +524,6 @@ const groupLayersVisibility = (e) => {
       <StyledLayerGroups>
         {group.parentId === -1 ? (
           <StyledMasterGroupHeader
-            aria-label={isOpen ? (group.locale[currentLang] && group.locale[currentLang].name
-            ? group.locale[currentLang].name
-            : group.locale[defaultLang] &&
-              group.locale[defaultLang].name
-            ? group.locale[defaultLang].name
-            : group.id) : (group.locale[currentLang] && group.locale[currentLang].name
-            ? group.locale[currentLang].name
-            : group.locale[defaultLang] &&
-              group.locale[defaultLang].name
-            ? group.locale[defaultLang].name
-            : group.id)}
             key={"smgh_" + group.parentId + "_" + group.id}
             onClick={() => {
               setIsOpen(!isOpen);
@@ -541,18 +559,7 @@ const groupLayersVisibility = (e) => {
               </StyledMasterGroupTitleContent>
             </StyledLeftContent>
             <StyledRightContent>
-              <StyledSelectButton 
-              aria-label={isOpen ? (group.locale[currentLang] && group.locale[currentLang].name
-              ? group.locale[currentLang].name
-              : group.locale[defaultLang] &&
-                group.locale[defaultLang].name
-              ? group.locale[defaultLang].name
-              : group.id) : (group.locale[currentLang] && group.locale[currentLang].name
-              ? group.locale[currentLang].name
-              : group.locale[defaultLang] &&
-                group.locale[defaultLang].name
-              ? group.locale[defaultLang].name
-              : group.id)}>
+              <StyledSelectButton>
                 <StyledMotionIconWrapper
                   initial="closed"
                   animate={isOpen ? "open" : "closed"}
@@ -569,33 +576,11 @@ const groupLayersVisibility = (e) => {
           </StyledMasterGroupHeader>
         ) : (
           <StyledGroupHeader
-            aria-label={isOpen ? (group.locale[currentLang] && group.locale[currentLang].name
-              ? group.locale[currentLang].name
-              : group.locale[defaultLang] &&
-                group.locale[defaultLang].name
-              ? group.locale[defaultLang].name
-              : group.id) : (group.locale[currentLang] && group.locale[currentLang].name
-              ? group.locale[currentLang].name
-              : group.locale[defaultLang] &&
-                group.locale[defaultLang].name
-              ? group.locale[defaultLang].name
-              : group.id)}
             key={"smgh_" + group.parentId + "_" + group.id}
             onClick={() => setIsOpen(!isOpen)}
           >
             <StyledLefContent>
-              <StyledSelectButton subGroup={true} 
-              aria-label={isOpen ? (group.locale[currentLang] && group.locale[currentLang].name
-              ? group.locale[currentLang].name
-              : group.locale[defaultLang] &&
-                group.locale[defaultLang].name
-              ? group.locale[defaultLang].name
-              : group.id) : (group.locale[currentLang] && group.locale[currentLang].name
-              ? group.locale[currentLang].name
-              : group.locale[defaultLang] &&
-                group.locale[defaultLang].name
-              ? group.locale[defaultLang].name
-              : group.id)}>
+              <StyledSelectButton subGroup={true}>
                 <StyledMotionIconWrapper
                   initial="closed"
                   animate={isOpen ? "open" : "closed"}

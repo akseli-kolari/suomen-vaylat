@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { AnimatePresence, motion } from 'framer-motion';
 import { faMap } from '@fortawesome/free-solid-svg-icons';
-import { sortObjectAlphabetically } from '../../../utils/rpcUtil';
+
 import { useAppSelector } from '../../../state/hooks';
-import ThemeLayerList from './ThemeLayerList';
+
+import ThemeLayerList from '../hierarchical-layerlist/ThemeLayerList';
 import DialogHeader from '../../dialog/DialogHeader';
 import strings from '../../../translations';
 import store from '../../../state/store';
@@ -58,9 +59,6 @@ function ThemeMenu() {
         },
     };
 
-    let sortedLayers = [...allLayers];
-    sortedLayers.sort((a, b) => sortObjectAlphabetically(a.name, b.name));
-
     return (
         <AnimatePresence>
             {!isSideMenuOpen && isThemeMenuOpen &&
@@ -78,8 +76,8 @@ function ThemeMenu() {
             >
                 <DialogHeader icon={faMap} title={strings.layerlist.layerlistLabels.themeLayers} handleClose={() => store.dispatch(setIsThemeMenuOpen(false))}/>
                 <ThemeLayerList
-                    allLayers={sortedLayers}
-                    allThemes={[...allThemesWithLayers]}
+                    allLayers={allLayers}
+                    allThemes={allThemesWithLayers}
                 />
             </StyledThemeMenuContainer>
             }

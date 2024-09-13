@@ -36,7 +36,7 @@ import {
     setMinimizeGfi,
     addToDrawToolMarkers,
     removeFromDrawToolMarkers,
-    addToGeoJsonArray
+    addToGeoJsonArray,
 } from '../../state/slices/uiSlice';
 import { getActiveAnnouncements, updateLayers } from '../../utils/rpcUtil';
 import SvLoder from '../../components/loader/SvLoader';
@@ -156,12 +156,12 @@ const PublishedMap = () => {
         );
         var synchronizer = OskariRPC.synchronizerFactory(channel, handlers);
 
+        
         channel.onReady(() => {
             store.dispatch(setChannel(channel));
             channel.getSupportedFunctions(function (data) {
                 //minor hack to make sure announcements are shown
                 fetchAnnounmentsAsync(data, channel, store);
-
                 if (data.getTags) {
                     channel.getTags(function (data) {
                         store.dispatch(setAllTags(data));

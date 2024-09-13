@@ -1,3 +1,4 @@
+import moment from 'moment';
 import {
     setAllLayers,
     setSelectedLayers,
@@ -9,12 +10,13 @@ import {
     setMapLayers,
     setAllSelectedThemeLayers
 } from '../state/slices/rpcSlice';
-import { Slide, toast } from "react-toastify";
+
 import {
     setSelectedMapLayersMenuThemeIndex,
     setIsLegendOpen,
     setIsZoomBarOpen
 } from '../state/slices/uiSlice';
+
 import { isMobile } from '../theme/theme';
 import strings from '../translations';
 import { ANNOUNCEMENTS_LOCALSTORAGE } from '../utils/constants';
@@ -26,20 +28,8 @@ import { ANNOUNCEMENTS_LOCALSTORAGE } from '../utils/constants';
  * @param {Object} channel
  */
 export const updateLayers = (store, channel) => {
-    channel && channel.getAllLayersSV(function (data) {
+    channel && channel.getAllLayers(function (data) {
         store.dispatch(setAllLayers(data));
-    }, function err(data) {
-        toast.error(strings.layerlist.errorLoadingLayers, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-            transition: Slide
-        });
     });
     channel && channel.getSelectedLayers(function (data) {
         const reArrangedSelectedLayers = reArrangeSelectedLayersOrder(data, store)
@@ -88,6 +78,7 @@ export const showNonThemeLayers = (store, channel) => {
  * @param {Number} selectedThemeId
  */
 export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme, selectedThemeId) => {
+
     const closeAllThemeLayers = (theme) => {
         // close all theme layers
         theme?.layers?.forEach(layerId => {
@@ -119,9 +110,7 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
             })
             allLayers && layers.length > 0 && layers.forEach(layerId => {
                 const filteredLayer = allLayers.find(l => l.id === layerId);
-                const isThemesArray = Array.isArray(filteredLayer.config.themes);
-                const foundMatch = filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase() === theme.locale["fi"].name.toLowerCase());
-                if (isThemesArray && foundMatch && foundMatch.default) {
+                if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default) {
                     channel.postRequest('MapModulePlugin.MapLayerVisibilityRequest', [layerId, true]);
                 }
             });
@@ -158,9 +147,7 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
                 })
                 allLayers && layers.length > 0 && layers.forEach(layerId => {
                     const filteredLayer = allLayers.find(l => l.id === layerId);
-                    const isThemesArray = Array.isArray(filteredLayer.config.themes);
-                    const foundMatch = filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase() === theme.locale["fi"].name.toLowerCase());
-                    if (isThemesArray && foundMatch && foundMatch.default) {
+                    if (Array.isArray(filteredLayer.config.themes) && filteredLayer.config?.themes?.find(t => t.name["fi"].toLowerCase === theme.locale["fi"].name.toLowerCase).default) {
                         channel.postRequest('MapModulePlugin.MapLayerVisibilityRequest', [layerId, true]);
                     }
                 });
@@ -197,22 +184,6 @@ export const selectGroup = (store, channel, allLayers, theme, lastSelectedTheme,
         },700);
     };
 };
-
-/**
-* Sort object values alphabetically i.ex. themes group names
-* @param {string} a first comparable value
-* @param {string} b second comparable value
-* @method sortObjectAlphabetically
-*/
-export const sortObjectAlphabetically = ( a, b ) => {
-    if ( a < b ){
-    return -1;
-    }
-    if ( a > b ){
-    return 1;
-    }
-    return 0;
-}
 
 /**
 * Rearrange object array according to other array.
@@ -374,16 +345,13 @@ export const getActiveAnnouncements = (annoucements) => {
                     )
                 : [];
         const activeAnnouncements = annoucements.filter(
-            (announcement) => {
-                const currDate = new Date();
-                const annDate = new Date(announcement.endDate);
-                return localStorageAnnouncements &&
+            (announcement) =>
+                localStorageAnnouncements &&
                 !localStorageAnnouncements.includes(
                     announcement.id
-                ) &&
-                currDate < annDate;
-            }
+                )
         );
+
 
         const currentLang = strings.getLanguage();
         const defaultLang = strings.getAvailableLanguages()[0];

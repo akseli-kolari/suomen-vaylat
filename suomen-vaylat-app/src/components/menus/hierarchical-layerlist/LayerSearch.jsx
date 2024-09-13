@@ -29,8 +29,6 @@ const StyledLayerSearchContainer = styled.div`
     display: flex;
     flex: 1;
     flex-direction: column;
-    width: 100%;
-    padding: 8px 0px 4px 0px;
 `;
 
 const StyledSearchInputContainer = styled.div`
